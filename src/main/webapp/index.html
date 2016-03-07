@@ -1,1 +1,52 @@
-<h1>Welcome to Timezones!</h1>
+<!DOCTYPE html>
+<html ng-app="timezones">
+<head>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+  	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+  	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script	type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://code.angularjs.org/1.3.0/angular-messages.min.js"></script>
+  
+  	<script type="text/javascript" src="js/app.js"></script>
+  	<script type="text/javascript" src="js/entries.js"></script>
+  	
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+	<title>Time Zones</title>
+</head>
+<body ng-controller="TimezonesController as timezones">
+	<div class="container">
+		<div class="jumbotron">
+		  <div ng-show="timezones.loggedUser" align="right">
+			<a href class="btn btn-primary btn-md" ng-click="timezones.logout()">Logout</a>
+		  </div>
+		  <div ng-hide="timezones.loggedUser || timezones.loggingShowing" align="right">
+			<a href class="btn btn-primary btn-md" ng-click="timezones.showLogin()">Login</a>
+		  </div>
+		  <h2>Time Zones</h2>
+		  <div ng-hide="timezones.loggedUser">
+			  <p>This application register time zones. 
+			  <a href ng-click="timezones.showRegister()" >Register</a> now.
+		  </div>
+		  <login ng-show="timezones.loggingShowing"></login>
+		  <register ng-show="timezones.registeringShowing"></register>
+		  <div ng-show="timezones.loggedUser">
+			<p>Hi {{timezones.loggedUser.name}}</p>
+		  </div>
+		</div>
+	
+	  	<section class="tab" ng-controller="SectionController as section" ng-show="timezones.loggedUser">
+	  		<ul class="nav nav-pills" role="tablist">
+		  		<li role="presentation" ng-class="{active:section.isSelected('users')}" ng-show="section.tabIsVisible('users')"> 
+		  			<a href ng-click="section.setTab('users')">Users</a> 
+		  		</li>
+		  		<li role="presentation" ng-class="{active:section.isSelected('timezones')}" ng-show="section.tabIsVisible('timezones')"> 
+		  			<a href ng-click="section.setTab('timezones')">Time Zones</a>
+		  		</li>	  		
+	  		</ul>
+	  		<users ng-show="section.isSelected('users')"></users>
+	  		<timezones ng-show="section.isSelected('timezones')" ></timezones>
+	  	</section>
+	  	
+	</div>
+</body>
+</html>
