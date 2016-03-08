@@ -10,6 +10,7 @@
   	<script type="text/javascript" src="js/app.js"></script>
   	<script type="text/javascript" src="js/entries.js"></script>
   	<script type="text/javascript" src="js/login.js"></script>
+  	<script type="text/javascript" src="js/users.js"></script>
   	
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 	<title>Time Zones</title>
@@ -44,7 +45,7 @@
 		  			<a href ng-click="section.setTab('timezones')">Time Zones</a>
 		  		</li>	  		
 	  		</ul>
-	  		<!-- users ng-show="section.isSelected('users')"></users-->
+	  		<users ng-show="section.isSelected('users')"></users>
 	  		<timezones ng-show="section.isSelected('timezones')" ></timezones>
 	  	</section>
 	  	

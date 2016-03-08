@@ -1,5 +1,5 @@
 (function(){
-	var app = angular.module('timezones', ['entries', 'login']);
+	var app = angular.module('timezones', ['entries', 'login', 'users']);
 	
 	var visibleTabsRoles = { USER: ['timezones'], 
             USER_MANAGER: ['users'],
