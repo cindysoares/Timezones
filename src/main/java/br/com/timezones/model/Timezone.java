@@ -1,8 +1,6 @@
 package br.com.timezones.model;
 
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,19 +12,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Timezone {
 	
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("+#;-#");
+	private static int counter = 0;
 	
+	private Integer id;
 	private String name;
 	private String city;
-	private TimeZone gmtDifference;
+	private int gmtDifference;
+	private TimeZone zoneInfo;
 	
 	public Timezone() {
 	}
 	
-	public Timezone(String name, String city, Integer gmt) {
-		if(gmt>12 || gmt<-12) throw new IllegalArgumentException("GMT difference must be between -12 and 12.");
+	public Timezone(String name, String city, Integer gmtDifference) {
+		this.id = ++counter;
 		this.name = name;
 		this.city = city;
-		this.gmtDifference = TimeZone.getTimeZone("GMT" + DECIMAL_FORMAT.format(gmt));
+		setGmtDifference(gmtDifference);
 	}
 
 	public String getName() {
@@ -36,9 +37,19 @@ public class Timezone {
 	public String getCity() {
 		return city;
 	}
+	
+	public void setGmtDifference(int gmtDifference) {
+		if(gmtDifference>12 || gmtDifference<-12) throw new IllegalArgumentException("GMT difference must be between -12 and 12.");
+		this.gmtDifference = gmtDifference;
+		this.zoneInfo = TimeZone.getTimeZone("GMT" + DECIMAL_FORMAT.format(gmtDifference));
+	}
 
-	public TimeZone getGmtDifference() {
+	public int getGmtDifference() {
 		return gmtDifference;
+	}
+	
+	public TimeZone getZoneInfo() {
+		return zoneInfo;
 	}
 	
 }
