@@ -30,10 +30,22 @@ public class Timezone {
 		setGmtDifference(gmtDifference);
 	}
 
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}
 
+	public void setCity(String city) {
+		this.city = city;
+	}
+	
 	public String getCity() {
 		return city;
 	}
