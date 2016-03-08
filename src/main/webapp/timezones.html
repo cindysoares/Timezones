@@ -42,7 +42,7 @@
               		<li>
               			<span class="label label-default">{{timezone.name}}</span>
               			<!--span ng-class="editTimezone.isAboveTheLimit(timezone.date) ? 'label label-danger' : 'label label-success'">{{timezone.calories}} calories</span-->
-              			{{timezone.city}} {{timezone.gmtDifference }} Current time: {{timezone.currentTime | date:'medium'}}
+              			{{timezone.city}}, {{timezone.gmtDifference}}, {{timezone.currentTime | date:'medium' : timezone.gmtDifference}}
               		</li>
               		<li> 
 						<div align="right"">

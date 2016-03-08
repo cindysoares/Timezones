@@ -1,7 +1,6 @@
 package br.com.timezones.model;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -15,7 +14,8 @@ public class Timezone {
 	
 	private String name;
 	private String city;
-	private Integer gmtDifference;
+	private TimeZone gmtDifference;
+	private Calendar currentTime;
 	
 	public Timezone() {
 	}
@@ -23,7 +23,8 @@ public class Timezone {
 	public Timezone(String name, String city, Integer gmt) {
 		this.name = name;
 		this.city = city;
-		this.gmtDifference = gmt;
+		this.gmtDifference = TimeZone.getTimeZone("GMT"+gmt);
+		this.currentTime = new GregorianCalendar(gmtDifference);
 	}
 
 	public String getName() {
@@ -34,12 +35,12 @@ public class Timezone {
 		return city;
 	}
 
-	public Integer getGmtDifference() {
+	public TimeZone getGmtDifference() {
 		return gmtDifference;
 	}
 	
-	public GregorianCalendar getCurrentTime() {
-		return new GregorianCalendar(TimeZone.getTimeZone("GMT"+gmtDifference));
+	public Calendar getCurrentTime() {
+		return currentTime;
 	}
 	
 }
