@@ -1,5 +1,6 @@
 package br.com.timezones.model;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -12,19 +13,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Timezone {
 	
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("+#;-#");
+	
 	private String name;
 	private String city;
 	private TimeZone gmtDifference;
-	private Calendar currentTime;
 	
 	public Timezone() {
 	}
 	
 	public Timezone(String name, String city, Integer gmt) {
+		if(gmt>12 || gmt<-12) throw new IllegalArgumentException("GMT difference must be between -12 and 12.");
 		this.name = name;
 		this.city = city;
-		this.gmtDifference = TimeZone.getTimeZone("GMT"+gmt);
-		this.currentTime = new GregorianCalendar(gmtDifference);
+		this.gmtDifference = TimeZone.getTimeZone("GMT" + DECIMAL_FORMAT.format(gmt));
 	}
 
 	public String getName() {
@@ -37,10 +39,6 @@ public class Timezone {
 
 	public TimeZone getGmtDifference() {
 		return gmtDifference;
-	}
-	
-	public Calendar getCurrentTime() {
-		return currentTime;
 	}
 	
 }

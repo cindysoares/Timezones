@@ -41,8 +41,7 @@
             	<ul class="nav nav-tabs nav-justified" ng-hide="editTimezone.isEditMode(timezone)">
               		<li>
               			<span class="label label-default">{{timezone.name}}</span>
-              			<!--span ng-class="editTimezone.isAboveTheLimit(timezone.date) ? 'label label-danger' : 'label label-success'">{{timezone.calories}} calories</span-->
-              			{{timezone.city}}, {{timezone.gmtDifference}}, {{timezone.currentTime | date:'medium' : timezone.gmtDifference}}
+              			{{timezone.gmtDifference}}, {{editTimezone.currentDate | date:'short' : timezone.gmtDifference}}, {{timezone.city}}
               		</li>
               		<li> 
 						<div align="right"">

@@ -7,10 +7,10 @@
 		this.editMode = false;
 		this.timezones = $scope.$parent.$parent.timezones;
 		this.selectedIndex = -1;
-		this.dailyCaloriesCount = {};
 		this.filters = {};
 		this.list = {};
 		this.selectedUser = null;
+		this.currentDate = Date.now();
 		
 		this.setEditMode = function(value) {
 			this.init();

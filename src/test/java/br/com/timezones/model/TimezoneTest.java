@@ -11,14 +11,20 @@ import org.junit.Test;
 public class TimezoneTest {
 	
 	@Test
-	public void testGetCurrentTime() {
-		Timezone timezone = new Timezone("X", "Y", -8);
-		
-		Assert.assertEquals("Hour difference from GMT+0 different from expected.", -8,
-				(new GregorianCalendar(TimeZone.getTimeZone("GMT+0")).get(Calendar.ZONE_OFFSET) + 
-				timezone.getCurrentTime().get(Calendar.ZONE_OFFSET))/3600000);
-		
+	public void testGetGmtDifferenceWhenGMTMinus8() {
+		Timezone timezone = new Timezone("X", "Y", -8);		
 		Assert.assertEquals("GMT-08:00", timezone.getGmtDifference().getID());
+	}
+	
+	@Test
+	public void testGetGmtDifferenceWhenGMTPlus2() {
+		Timezone timezone = new Timezone("X", "Y", 2);
+		Assert.assertEquals("GMT+02:00", timezone.getGmtDifference().getID());
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testNewTimezoneWhenGMTPlus50() {
+		new Timezone("X", "Y", 50);
 	}
 
 }
