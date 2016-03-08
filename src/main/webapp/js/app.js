@@ -28,10 +28,10 @@
 			$scope.loginSuccess();
 		};
 		$scope.loginSuccess = function(){
-		   $scope.$broadcast("loginSuccess", {loggedUser: $scope.calories.loggedUser});
+		   $scope.$broadcast("loginSuccess", {loggedUser: $scope.timezones.loggedUser});
 		};		
 		$scope.logout = function(){
-		   $scope.$broadcast("logout", {loggedUser: $scope.calories.loggedUser});
+		   $scope.$broadcast("logout", {loggedUser: $scope.timezones.loggedUser});
 		};		
 	});
 	

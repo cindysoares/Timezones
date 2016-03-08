@@ -57,7 +57,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<Timezone> getMeals() {
+	public List<Timezone> getTimezones() {
 		return timezones;
 	}
 	public boolean addTimezone(Timezone value) {

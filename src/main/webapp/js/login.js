@@ -10,7 +10,7 @@
 						return response.data;
 					});
 					return promise;
-				}
+				} // FIXME Don´t pass password as a param.
 		};
 		return myService;
 	});
@@ -24,7 +24,7 @@
 				if(!d) {
 					$scope.login.$messages.invalidLogin = true;
 				} else {
-					$scope.calories.login(d);
+					$scope.timezones.login(d);
 					$scope.login.$messages = {}
 				}
 			});

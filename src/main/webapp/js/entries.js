@@ -1,11 +1,11 @@
 (function(){
-	var mealsApp = angular.module('entries', ['ngMessages']);
+	var timezonesApp = angular.module('entries', ['ngMessages']);
 		
-	mealsApp.controller('EntriesCtrl', function($scope, $filter, addTimezoneService, removeTimezoneService, updateTimezoneService) {
+	timezonesApp.controller('EntriesCtrl', function($scope, $filter) {
 		this.$messages = {}
 		this.editedTimezone = {};
 		this.editMode = false;
-		this.calories = $scope.$parent.$parent.calories;
+		this.timezones = $scope.$parent.$parent.timezones;
 		this.selectedIndex = -1;
 		this.dailyCaloriesCount = {};
 		this.filters = {};
@@ -16,15 +16,15 @@
 			this.init();
 			this.editMode = value;
 		};
-		this.isEditMode = function(meal) {
+		this.isEditMode = function(timezone) {
 			if(!this.editMode) return false;
-			if(!meal) return false;
+			if(!timezone) return false;
 			
-			if( !this.editMode.id && !meal.id ) {
+			if( !this.editMode.id && !timezone.id ) {
 				return true;
 			}
 			
-			if(this.editMode.id === meal.id) {
+			if(this.editMode.id === timezone.id) {
 				return true;
 			}
 			return false;
@@ -42,7 +42,7 @@
 				if($scope.section.selectedUser) {
 					$scope.editTimezone.selectedUser = $scope.section.selectedUser;
 				} else {
-					$scope.editTimezone.selectedUser = $scope.calories.loggedUser;
+					$scope.editTimezone.selectedUser = $scope.timezones.loggedUser;
 				}
 				$scope.editTimezone.init();	
 			}
