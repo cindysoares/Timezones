@@ -1,5 +1,5 @@
 (function(){
-	var app = angular.module('timezones', ['entries', 'login', 'users']);
+	var app = angular.module('timezones', ['entries', 'login', 'users', 'register']);
 	
 	var visibleTabsRoles = { USER: ['timezones'], 
             USER_MANAGER: ['users'],
@@ -71,6 +71,10 @@
 		return { restrict: 'E', templateUrl: 'login.html' };
 	});
 		
+	app.directive('register', function() {
+		return { restrict: 'E', templateUrl: 'register.html' };
+	});
+
 	app.directive('timezones', function(){
 		return { restrict: 'E', templateUrl: 'timezones.html' };
 	});
