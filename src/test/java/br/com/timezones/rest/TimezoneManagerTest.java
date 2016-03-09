@@ -1,5 +1,7 @@
 package br.com.timezones.rest;
 
+import java.util.List;
+
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
@@ -82,4 +84,31 @@ public class TimezoneManagerTest  extends JerseyTest {
         		.request(MediaType.APPLICATION_JSON).post(null, Timezone.class);
         Assert.assertNull("Updated a non-existent timezone.", responseMsg);
     }
+    
+    @Test
+    public void test_findAllWhenRegularUser() {
+    	WebTarget target = target();
+    	@SuppressWarnings("rawtypes")
+		List responseMsg = target.path("/timezones/1")
+    			.request(MediaType.APPLICATION_JSON).post(null, List.class);
+    	Assert.assertNotNull(responseMsg);
+    	Assert.assertEquals(6, responseMsg.size());
+    }
+    
+    @Test(expected=UnsupportedOperationException.class)
+    public void test_findAllWhenAdminUser() {
+    	WebTarget target = target();
+    	target.path("/timezones/3")
+    			.request(MediaType.APPLICATION_JSON).post(null, List.class);
+    }
+    
+    @Test
+    public void test_findAllWhenManagerUser() {
+    	WebTarget target = target();
+    	@SuppressWarnings("rawtypes")
+		List responseMsg = target.path("/timezones/2")
+    			.request(MediaType.APPLICATION_JSON).post(null, List.class);
+    	Assert.assertNotNull(responseMsg);
+    }
+
 }
