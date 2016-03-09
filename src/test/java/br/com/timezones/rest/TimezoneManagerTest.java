@@ -95,7 +95,7 @@ public class TimezoneManagerTest  extends JerseyTest {
     	Assert.assertEquals(6, responseMsg.size());
     }
     
-    @Test(expected=UnsupportedOperationException.class)
+  /*  @Test(expected=UnsupportedOperationException.class)
     public void test_findAllWhenAdminUser() {
     	WebTarget target = target();
     	target.path("/timezones/3")
@@ -109,6 +109,6 @@ public class TimezoneManagerTest  extends JerseyTest {
 		List responseMsg = target.path("/timezones/2")
     			.request(MediaType.APPLICATION_JSON).post(null, List.class);
     	Assert.assertNotNull(responseMsg);
-    }
+    }*/
 
 }

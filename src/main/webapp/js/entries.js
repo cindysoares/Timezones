@@ -1,6 +1,19 @@
 (function(){
 	var timezonesApp = angular.module('entries', ['ngMessages']);
 		
+	timezonesApp.factory('findAllService',  function($http) {
+		var myService = {
+				async: function (userId) {
+					var promise = $http.post("/timezones/" + userId, null, {params: {}})
+					.then(function(response){
+						return response.data;
+					});
+					return promise;
+				}
+		};
+		return myService;
+	});
+	
 	timezonesApp.factory('addTimezoneService',  function($http) {
 		var myService = {
 				async: function (userId, timezone) {
@@ -42,7 +55,7 @@
 		return myService;
 	});	
 	
-	timezonesApp.controller('EntriesCtrl', function($scope, $filter, addTimezoneService, removeTimezoneService, updateTimezoneService) {
+	timezonesApp.controller('EntriesCtrl', function($scope, $filter, findAllService, addTimezoneService, removeTimezoneService, updateTimezoneService) {
 		this.$messages = {}
 		this.editedTimezone = {};
 		this.editMode = false;
@@ -71,7 +84,9 @@
 			return false;
 		};
 		this.init = function() {
-			this.list = this.selectedUser.timezones;
+			findAllService.async(this.selectedUser.id).then(function(result) {
+				$scope.editTimezone.list = result;
+			});
 			this.editMode = false;
 			this.editedTimezone = {};
 			this.$messages = {};
