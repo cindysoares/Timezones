@@ -94,7 +94,7 @@
 		};
 		this.removeTimezone = function(timezoneToRemove) {
 			this.selectedIndex = -1
-			var timezonesArray = eval( this.selectedUser.timezones );
+			var timezonesArray = eval( this.list );
 			for( var i = 0; i < timezonesArray.length; i++ ) {
 				if( timezonesArray[i].id === timezoneToRemove.id ) {
 					this.selectedIndex = i;
@@ -106,7 +106,7 @@
 			}
 			removeTimezoneService.async(this.selectedUser.id, timezoneToRemove.id).then(function(removed) {
 				if (removed) {
-					$scope.editTimezone.selectedUser.timezones.splice( $scope.editTimezone.selectedIndex, 1 );
+					$scope.editTimezone.list.splice( $scope.editTimezone.selectedIndex, 1 );
 					$scope.editTimezone.$messages.deleteSuccess = true;
 				} else {
 					$scope.editTimezone.$messages.warning = true;
@@ -116,7 +116,7 @@
 		this.addTimezone = function() {
 			addTimezoneService.async(this.selectedUser.id, this.editedTimezone).then(function(d){
 				if (d != null) {
-					$scope.editTimezone.selectedUser.timezones.push(d);
+					$scope.editTimezone.list.push(d);
 					$scope.editTimezone.editedTimezone = {};
 					$scope.editTimezone.editMode = false;
 					$scope.editTimezone.$messages.saveSuccess = true;
@@ -126,11 +126,11 @@
 			});			
 		};
 		this.updateTimezone = function(timezoneToUpdate) {
-			this.selectedIndex = this.selectedUser.timezones.indexOf(timezoneToUpdate);
+			this.selectedIndex = this.list.indexOf(timezoneToUpdate);
 			updateTimezoneService.async(this.selectedUser.id, timezoneToUpdate).then(function(d){				
 				if (d != null) {
-					$scope.editTimezone.selectedUser.timezones.splice( $scope.editTimezone.selectedIndex, 1 );
-					$scope.editTimezone.selectedUser.timezones.push(d);
+					$scope.editTimezone.list.splice( $scope.editTimezone.selectedIndex, 1 );
+					$scope.editTimezone.list.push(d);
 					$scope.editTimezone.editMode = false;
 					$scope.editTimezone.$messages.updateSuccess = true;
 				} else {
