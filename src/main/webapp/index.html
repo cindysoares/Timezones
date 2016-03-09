@@ -39,12 +39,12 @@
 	
 	  	<section class="tab" ng-controller="SectionController as section" ng-show="timezones.loggedUser">
 	  		<ul class="nav nav-pills" role="tablist">
-		  		<li role="presentation" ng-class="{active:section.isSelected('users')}" ng-show="section.tabIsVisible('users')"> 
-		  			<a href ng-click="section.setTab('users')">Users</a> 
-		  		</li>
 		  		<li role="presentation" ng-class="{active:section.isSelected('timezones')}" ng-show="section.tabIsVisible('timezones')"> 
 		  			<a href ng-click="section.setTab('timezones')">Time Zones</a>
 		  		</li>	  		
+		  		<li role="presentation" ng-class="{active:section.isSelected('users')}" ng-show="section.tabIsVisible('users')"> 
+		  			<a href ng-click="section.setTab('users')">Users</a> 
+		  		</li>
 	  		</ul>
 	  		<users ng-show="section.isSelected('users')"></users>
 	  		<timezones ng-show="section.isSelected('timezones')" ></timezones>

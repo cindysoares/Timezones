@@ -3,7 +3,7 @@
 	
 	var visibleTabsRoles = { USER: ['timezones'], 
             USER_MANAGER: ['users'],
-            ADMIN_MANAGER: ['users', 'timezones'] };
+            ADMIN_MANAGER: ['timezones', 'users'] };
 	
 	app.controller('TimezonesController', function($scope){
 		this.loggedUser = null;
