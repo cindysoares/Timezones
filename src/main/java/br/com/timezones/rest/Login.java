@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import br.com.timezones.dao.MemoryUserDAO;
+import br.com.timezones.dao.DAOFactory;
 import br.com.timezones.dao.UserDAO;
 import br.com.timezones.model.User;
 
@@ -14,7 +14,7 @@ import br.com.timezones.model.User;
 @Produces(MediaType.APPLICATION_JSON)
 public class Login {
 	
-	private UserDAO dao = new MemoryUserDAO();
+	private UserDAO dao = DAOFactory.getUserDAO();
 	
 	@GET
 	@Path("/login")

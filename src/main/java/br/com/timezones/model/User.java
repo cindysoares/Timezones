@@ -1,8 +1,5 @@
 package br.com.timezones.model;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,12 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 	
-	private static int counter = 0;
-	
 	private Integer id;
 	private String name;
-	private String email;	
-	private List<Timezone> timezones = new LinkedList<Timezone>();
+	private String email;
 	
 	private Profile profile;
 	
@@ -25,12 +19,20 @@ public class User {
 	public User() {
 	}
 	
-	public User(String name, String email, String password, Profile profile) {
-		this.id = ++counter;
+	public User(Integer id, String name, String email, String password, Profile profile) {
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.profile = profile;
+	}
+	
+	public User(String name, String email, String password, Profile profile) {
+		this(null, name, email, password, profile);
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
 	}
 		
 	public Integer getId() {
@@ -57,19 +59,13 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<Timezone> getTimezones() {
-		return timezones;
-	}
-	public boolean addTimezone(Timezone value) {
-		return this.timezones.add(value);
-	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -77,6 +73,7 @@ public class User {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

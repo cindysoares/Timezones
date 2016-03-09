@@ -44,14 +44,14 @@ public class UsersManagerTest extends JerseyTest {
     @Test
     public void test_updateUser() {
     	WebTarget target = target();
-    	User responseMsg = target.path("/users/update/1")
+    	User responseMsg = target.path("/users/update/4")
         		.queryParam("name", "Michael")
         		.queryParam("email", "michael@email.com")
         		.queryParam("password", "pass")
         		.queryParam("profile", Profile.USER_MANAGER.name())
         		.request(MediaType.APPLICATION_JSON).post(null, User.class);
         Assert.assertNotNull("Didn´t update the user.", responseMsg);
-        Assert.assertEquals("Wrong id.", new Integer(1), responseMsg.getId());
+        Assert.assertEquals("Wrong id.", new Integer(4), responseMsg.getId());
         Assert.assertEquals("Michael", responseMsg.getName());
         Assert.assertEquals("michael@email.com", responseMsg.getEmail());
         Assert.assertNull(responseMsg.getPassword());
@@ -73,7 +73,7 @@ public class UsersManagerTest extends JerseyTest {
     @Test
     public void test_removeUser() {
     	WebTarget target = target();
-    	boolean responseMsg = target.path("/users/remove/3")
+    	boolean responseMsg = target.path("/users/remove/4")
         		.request(MediaType.APPLICATION_JSON).delete(Boolean.class);
         Assert.assertTrue("Didn´t remove the user.", responseMsg);
     }

@@ -1,6 +1,5 @@
 package br.com.timezones.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
@@ -11,7 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import br.com.timezones.dao.MemoryUserDAO;
+import br.com.timezones.dao.DAOFactory;
+import br.com.timezones.dao.TimezoneDAO;
 import br.com.timezones.dao.UserDAO;
 import br.com.timezones.model.Profile;
 import br.com.timezones.model.Timezone;
@@ -21,16 +21,17 @@ import br.com.timezones.model.User;
 @Produces(MediaType.APPLICATION_JSON)
 public class TimezoneManager {
 	
-	private UserDAO dao = new MemoryUserDAO();
+	private UserDAO userDAO = DAOFactory.getUserDAO();
+	private TimezoneDAO timezoneDAO = DAOFactory.getTimezoneDAO();
 	
 	@POST
 	@Path("/{userId}")
 	public List<Timezone> findAll(@PathParam("userId") Integer userId) {
-		User user = dao.find(userId);
+		User user = userDAO.find(userId);
 		if(Profile.ADMIN_MANAGER.equals(user.getProfile())) {
-			return new ArrayList<Timezone>();
+			return timezoneDAO.findAll();
 		} else if(Profile.USER.equals(user.getProfile())) {
-			return user.getTimezones();
+			return timezoneDAO.findByUser(userId);
 		} 
 		
 		throw new UnsupportedOperationException();
@@ -40,11 +41,10 @@ public class TimezoneManager {
 	@Path("/add/{userId}")
 	public Timezone addTimezone(@PathParam("userId") Integer userId, 
 			@QueryParam("name") String name, @QueryParam("city") String city, @QueryParam("gmtDifference") Integer gmtDifference) {
-		User user = dao.find(userId);
+		User user = userDAO.find(userId);
 		Timezone timezone = null;
 		if(user != null) {
-			timezone = new Timezone(name, city, gmtDifference);
-			user.addTimezone(timezone);
+			timezone = timezoneDAO.save(new Timezone(name, city, gmtDifference, userId));
 		}
 		return timezone;
 	}
@@ -54,22 +54,16 @@ public class TimezoneManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Timezone updateTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId, 
 			@QueryParam("name") String name, @QueryParam("city") String city, @QueryParam("gmtDifference") Integer gmtDifference) {
-		User user = dao.find(userId);
-		Timezone timezone = user.getTimezones().stream().filter(m -> m.getId().equals(timezoneId)).findFirst().orElse(null);
-		if(timezone != null) {
-			timezone.setName(name);
-			timezone.setCity(city);
-			timezone.setGmtDifference(gmtDifference);
-		}
-		return timezone;
+		User user = userDAO.find(userId);
+		return timezoneDAO.update(new Timezone(timezoneId, name, city, gmtDifference, userId));
 	}
 
 	@DELETE
 	@Path("/remove/{userId}/{timezoneId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean removeTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId) {
-		User user = dao.find(userId);
-		return user.getTimezones().removeIf(m -> m.getId().equals(timezoneId));
+		User user = userDAO.find(userId);
+		return timezoneDAO.remove(timezoneId);
 	}
 
 }

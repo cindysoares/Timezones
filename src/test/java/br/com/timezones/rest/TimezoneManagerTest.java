@@ -9,6 +9,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.com.timezones.model.Timezone;
@@ -21,6 +22,10 @@ public class TimezoneManagerTest  extends JerseyTest {
         enable(TestProperties.DUMP_ENTITY);
 
         return new JerseyConfig();
+    }
+    
+    @BeforeClass
+    public static void createScenario() {
     }
     
     @Test
@@ -81,6 +86,9 @@ public class TimezoneManagerTest  extends JerseyTest {
     public void test_updateTimezoneToANonExistentUser() {
         WebTarget target = target();
         Timezone responseMsg = target.path("/timezones/update/1/999")
+        		.queryParam("name", "VUT")
+        		.queryParam("city", "Port Vila")
+        		.queryParam("gmtDifference", 11)
         		.request(MediaType.APPLICATION_JSON).post(null, Timezone.class);
         Assert.assertNull("Updated a non-existent timezone.", responseMsg);
     }
@@ -92,23 +100,24 @@ public class TimezoneManagerTest  extends JerseyTest {
 		List responseMsg = target.path("/timezones/1")
     			.request(MediaType.APPLICATION_JSON).post(null, List.class);
     	Assert.assertNotNull(responseMsg);
-    	Assert.assertEquals(6, responseMsg.size());
+    	Assert.assertEquals(4, responseMsg.size());
     }
-    
-  /*  @Test(expected=UnsupportedOperationException.class)
-    public void test_findAllWhenAdminUser() {
-    	WebTarget target = target();
-    	target.path("/timezones/3")
-    			.request(MediaType.APPLICATION_JSON).post(null, List.class);
-    }
-    
-    @Test
+    /*
+    @Test(expected=UnsupportedOperationException.class)
     public void test_findAllWhenManagerUser() {
     	WebTarget target = target();
+    	target.path("/timezones/2")
+    			.request(MediaType.APPLICATION_JSON).post(null, List.class);
+    }*/
+    
+    @Test
+    public void test_findAllWhenAdminUser() {
+    	WebTarget target = target();
     	@SuppressWarnings("rawtypes")
-		List responseMsg = target.path("/timezones/2")
+		List responseMsg = target.path("/timezones/3")
     			.request(MediaType.APPLICATION_JSON).post(null, List.class);
     	Assert.assertNotNull(responseMsg);
-    }*/
+    	Assert.assertTrue(responseMsg.size()>=5);
+    }
 
 }

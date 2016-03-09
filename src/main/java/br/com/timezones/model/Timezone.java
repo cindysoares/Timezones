@@ -12,24 +12,34 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Timezone {
 	
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("+#;-#");
-	private static int counter = 0;
 	
 	private Integer id;
 	private String name;
 	private String city;
-	private int gmtDifference;
+	private Integer gmtDifference;
 	private TimeZone zoneInfo;
+	
+	private Integer userId;
 	
 	public Timezone() {
 	}
 	
-	public Timezone(String name, String city, Integer gmtDifference) {
-		this.id = ++counter;
+	public Timezone(Integer id, String name, String city, Integer gmtDifference, Integer userId) {
+		this.id = id;
 		this.name = name;
 		this.city = city;
 		setGmtDifference(gmtDifference);
+		this.userId = userId;
+	}
+	
+	public Timezone(String name, String city, Integer gmtDifference, Integer userId) {
+		this(null, name, city, gmtDifference, userId);
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -50,8 +60,8 @@ public class Timezone {
 		return city;
 	}
 	
-	public void setGmtDifference(int gmtDifference) {
-		if(gmtDifference>12 || gmtDifference<-12) throw new IllegalArgumentException("GMT difference must be between -12 and 12.");
+	public void setGmtDifference(Integer gmtDifference) {
+		if(gmtDifference ==null || gmtDifference>12 || gmtDifference<-12) throw new IllegalArgumentException("GMT difference must be between -12 and 12.");
 		this.gmtDifference = gmtDifference;
 		this.zoneInfo = TimeZone.getTimeZone("GMT" + DECIMAL_FORMAT.format(gmtDifference));
 	}
@@ -63,5 +73,34 @@ public class Timezone {
 	public TimeZone getZoneInfo() {
 		return zoneInfo;
 	}
+	
+	public Integer getUserId() {
+		return userId;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Timezone other = (Timezone) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}	
 	
 }

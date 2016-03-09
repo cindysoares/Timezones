@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import br.com.timezones.dao.MemoryUserDAO;
+import br.com.timezones.dao.DAOFactory;
 import br.com.timezones.dao.UserDAO;
 import br.com.timezones.model.Profile;
 import br.com.timezones.model.User;
@@ -20,7 +20,7 @@ import br.com.timezones.model.User;
 @Produces(MediaType.APPLICATION_JSON)
 public class UsersManager {
 
-	private UserDAO dao = new MemoryUserDAO();
+	private UserDAO dao = DAOFactory.getUserDAO();
 	
 	@POST
 	@Path("/add")
@@ -36,20 +36,12 @@ public class UsersManager {
 	public User updateUser(@PathParam("userId") Integer userId, 
 			@QueryParam("name") String name, @QueryParam("email") String email, 
 			@QueryParam("password")	String password, @QueryParam("profile") String profileName) {
-		User user = dao.find(userId);
-		if (user == null) return null;
-		user.setName(name);
-		user.setEmail(email);
-		if(password != null && !password.trim().isEmpty()) {
-			user.setPassword(password);
-		}
-		user.setProfile(getProfile(profileName));
-		return dao.update(user);
+		return dao.update(new User(userId, name, email, password, getProfile(profileName)));
 	}
 
 	@DELETE
 	@Path("/remove/{userId}")
-	public boolean removeMeal(@PathParam("userId") Integer userId) {
+	public boolean removeUser(@PathParam("userId") Integer userId) {
 		return dao.remove(userId);
 	}
 

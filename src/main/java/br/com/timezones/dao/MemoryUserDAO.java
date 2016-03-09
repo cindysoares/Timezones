@@ -4,29 +4,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 import br.com.timezones.model.Profile;
-import br.com.timezones.model.Timezone;
 import br.com.timezones.model.User;
 
 public class MemoryUserDAO implements UserDAO {
 	
 	private static Set<User> users = new HashSet<User>();
+	private static int counter;
 	
-	static {
-		User regular_user = new User("Cindy Soares", "cindy@email.com", "senha", Profile.USER);
-		regular_user.addTimezone(new Timezone("PST", "Los Angeles", -8));
-		regular_user.addTimezone(new Timezone("PET", "Lima", -5));
-		regular_user.addTimezone(new Timezone("BRT", "Rio de Janeiro", -3));
-		regular_user.addTimezone(new Timezone("GMT", "London", 0));
-		regular_user.addTimezone(new Timezone("MSK", "Moskow", +3));
-		regular_user.addTimezone(new Timezone("JST", "Tokio", +9));
-		
-		users.add(regular_user);
-		users.add(new User("User manager", "manager@email.com", "1234", Profile.USER_MANAGER));
-		users.add(new User("User admin", "admin@email.com", "4321", Profile.ADMIN_MANAGER));
+	static {		
+		add(new User("Cindy Soares", "cindy@email.com", "senha", Profile.USER));
+		add(new User("User manager", "manager@email.com", "1234", Profile.USER_MANAGER));
+		add(new User("User admin", "admin@email.com", "4321", Profile.ADMIN_MANAGER));
+		add(new User("X", "x@email.com", "xxx", Profile.USER));
+	}
+	
+	protected MemoryUserDAO() {
 	}
 	
 	public User find(Integer userId) {
-		return (User) users.stream().filter(u -> u.getId().equals(userId)).findFirst().orElse(null);
+		return users.stream().filter(u -> u.getId().equals(userId)).findFirst().orElse(null);
 	}
 	
 	public User find(String email) {
@@ -34,22 +30,30 @@ public class MemoryUserDAO implements UserDAO {
 	}
 	
 	public User save(User user) {
-		boolean saved = users.add(user);
-		if(saved) return user;
-		return null;
+		return add(user);
+	}
+	
+	private static User add(User newValue) {
+		newValue.setId(++counter);
+		boolean wasAdded = users.add(newValue);		
+		return wasAdded? newValue:null;
 	}
 	
 	public User update(User user) {
-		boolean removed = users.remove(user);
-		if(removed) {
-			boolean saved = users.add(user);
-			if(saved) return user;
+		User userToUpdate = find(user.getId());
+		if(userToUpdate==null) return null;
+		userToUpdate.setName(user.getName());
+		userToUpdate.setEmail(user.getEmail());
+		if(user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+			userToUpdate.setPassword(user.getPassword());
 		}
-		return null;
+		userToUpdate.setProfile(user.getProfile());
+		return userToUpdate;
 	}
 	
 	public boolean remove(Integer userId) {
-		return users.remove(find(userId));
+		User userToRemove = find(userId);
+		return users.remove(userToRemove);
 	}
 	
 	@Override
