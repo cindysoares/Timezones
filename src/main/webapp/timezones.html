@@ -1,25 +1,4 @@
 <div class="panel" ng-controller='EntriesCtrl as editTimezone'>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<form class="navbar-form navbar-right" role="search">
-					<div class="row">
-						<div class="col-lg-3">
-							<div class="input-group">
-								<span class="input-group-addon">Name</span> <input type="text" class="form-control" placeholder="name" ng-model="filterName">
-							</div>
-						</div>
-						<div class="col-lg-1">
-							<div class="input-group-btn">
-								<button type="button" class="btn btn-default {active:editTimezone.filters.active}" aria-label="Search" ng-click="editTimezone.filter()">
-									<span class="glyphicon glyphicon-filter"></span>
-								</button>
-							</div>
-						</div>
-				</form>
-			</div>
-		</div>
-	</nav>
 	<div><form name="formTimezone" ng-submit="editTimezone.save()">
 		<ul class="list-group">
             <li class="list-group-item" ng-repeat="timezone in editTimezone.list | filterByName: filterName">
@@ -36,9 +15,6 @@
 		            </li>
 		        </ul>
 				<ul class="nav nav-tabs nav-justified" ng-show="editTimezone.isEditMode(timezone)">
-					<!-- <li><fieldset class="form-group">
-						<input type="date" class="form-control" ng-model="timezone.date" required/>
-					</fieldset></li> -->
 					<li><fieldset class="form-group">
 						<input type="text" class="form-control" placeholder="name" ng-model="timezone.name" required/>
 					</fieldset></li>

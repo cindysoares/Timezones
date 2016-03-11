@@ -45,6 +45,12 @@
 		  		<li role="presentation" ng-class="{active:section.isSelected('users')}" ng-show="section.tabIsVisible('users')"> 
 		  			<a href ng-click="section.setTab('users')">Users</a> 
 		  		</li>
+		  		<li ng-show="section.isSelected('timezones')">
+					<div class="form-group has-feedback" align="right">
+					    <input type="text" class="form-control" placeholder="name" ng-model="filterName"/>
+					    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+					</div>		  		
+		  		</li>
 	  		</ul>
 	  		<users ng-show="section.isSelected('users')"></users>
 	  		<timezones ng-show="section.isSelected('timezones')" ></timezones>
