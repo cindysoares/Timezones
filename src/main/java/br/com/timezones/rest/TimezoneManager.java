@@ -6,10 +6,10 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import br.com.timezones.dao.DAOFactory;
@@ -42,8 +42,7 @@ public class TimezoneManager {
 	@POST
 	@Path("/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Timezone addTimezone(@PathParam("userId") Integer userId, 
-			Timezone timezone) {
+	public Timezone addTimezone(@PathParam("userId") Integer userId, Timezone timezone) {
 		User user = userDAO.find(userId);
 		if(user == null) return null;
 		if(user != null) {
@@ -52,12 +51,12 @@ public class TimezoneManager {
 		return timezone;
 	}
 	
-	@POST
-	@Path("/update/{userId}/{timezoneId}")
+	@PUT
+	@Path("/{userId}/{timezoneId}")
 	public Timezone updateTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId, 
-			@QueryParam("name") String name, @QueryParam("city") String city, @QueryParam("gmtDifference") Integer gmtDifference) {
+			Timezone timezone) {
 		User user = userDAO.find(userId);
-		return timezoneDAO.update(new Timezone(timezoneId, name, city, gmtDifference, userId));
+		return timezoneDAO.update(timezone);
 	}
 
 	@DELETE

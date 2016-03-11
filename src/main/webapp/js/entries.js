@@ -43,8 +43,7 @@
 	timezonesApp.factory('updateTimezoneService',  function($http) {
 		var myService = {
 				async: function (userId, timezone) {
-					var promise = $http.post("/timezones/update/" + userId + "/" + timezone.id, null, 
-							{params: {name: timezone.name, city: timezone.city, gmtDifference: timezone.gmtDifference}})
+					var promise = $http.put("/timezones/" + userId + "/" + timezone.id, timezone)
 					.then(function(response){
 						return response.data;
 					});
