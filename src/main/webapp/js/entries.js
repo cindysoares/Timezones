@@ -55,13 +55,25 @@
 		return myService;
 	});	
 	
-	timezonesApp.controller('EntriesCtrl', function($scope, $filter, findAllService, addTimezoneService, removeTimezoneService, updateTimezoneService) {
+	timezonesApp.filter('filterByName', function(){
+		return function(timezones, filterName) {
+			var filteredTimezones = [];
+			var filterNameToUpperCase = filterName? filterName.toUpperCase():null;
+			angular.forEach(timezones, function(timezone) {
+			      if (!filterName || timezone.name.toUpperCase().includes(filterNameToUpperCase)) {
+			    	  filteredTimezones.push(timezone);
+			      }			      
+			});
+			return filteredTimezones;
+		}
+	});
+	
+	timezonesApp.controller('EntriesCtrl', function($scope, findAllService, addTimezoneService, removeTimezoneService, updateTimezoneService) {
 		this.$messages = {}
 		this.editedTimezone = {};
 		this.editMode = false;
 		this.timezones = $scope.$parent.$parent.timezones;
 		this.selectedIndex = -1;
-		this.filters = {};
 		this.list = {};
 		this.selectedUser = null;
 		this.currentDate = Date.now();
@@ -137,7 +149,7 @@
 					$scope.editTimezone.$messages.warning = true;
 				}
 			});		
-		};		
+		};
 		$scope.$on("tabSelected", function(event, args){
 			if (args.selectedTab === 'timezones') {				
 				if($scope.section.selectedUser) {
