@@ -2,6 +2,7 @@ package br.com.timezones.rest;
 
 import java.util.List;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
@@ -31,11 +32,9 @@ public class TimezoneManagerTest  extends JerseyTest {
     @Test
     public void test_addTimezone() {
         WebTarget target = target();
-		Timezone responseMsg = target.path("/timezones/add/1")
-        		.queryParam("name", "AKST")
-        		.queryParam("city", "Fairbanks")
-        		.queryParam("gmtDifference", -9)
-        		.request(MediaType.APPLICATION_JSON).post(null, Timezone.class);
+		Timezone responseMsg = target.path("/timezones/1")
+        		.request(MediaType.APPLICATION_JSON)
+        		.post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 1), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNotNull("Didn´t add the timezone.", responseMsg);
         Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
         Assert.assertEquals("AKST", responseMsg.getName());
@@ -46,8 +45,9 @@ public class TimezoneManagerTest  extends JerseyTest {
     @Test
     public void test_addTimezoneToANonExistentUser() {
         WebTarget target = target();
-        Timezone responseMsg = target.path("/timezones/add/999")
-        		.request(MediaType.APPLICATION_JSON).post(null, Timezone.class);
+        Timezone responseMsg = target.path("/timezones/999")
+        		.request(MediaType.APPLICATION_JSON)
+        		.post(Entity.entity(new Timezone(), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNull("Added the timezone to a non-existent .", responseMsg);
     }
 

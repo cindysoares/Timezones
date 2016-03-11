@@ -2,6 +2,7 @@ package br.com.timezones.rest;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -39,20 +40,20 @@ public class TimezoneManager {
 	}
 	
 	@POST
-	@Path("/add/{userId}")
+	@Path("/{userId}")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Timezone addTimezone(@PathParam("userId") Integer userId, 
-			@QueryParam("name") String name, @QueryParam("city") String city, @QueryParam("gmtDifference") Integer gmtDifference) {
+			Timezone timezone) {
 		User user = userDAO.find(userId);
-		Timezone timezone = null;
+		if(user == null) return null;
 		if(user != null) {
-			timezone = timezoneDAO.save(new Timezone(name, city, gmtDifference, userId));
+			timezone = timezoneDAO.save(timezone);
 		}
 		return timezone;
 	}
 	
 	@POST
 	@Path("/update/{userId}/{timezoneId}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Timezone updateTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId, 
 			@QueryParam("name") String name, @QueryParam("city") String city, @QueryParam("gmtDifference") Integer gmtDifference) {
 		User user = userDAO.find(userId);
@@ -61,7 +62,6 @@ public class TimezoneManager {
 
 	@DELETE
 	@Path("/remove/{userId}/{timezoneId}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public boolean removeTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId) {
 		User user = userDAO.find(userId);
 		return timezoneDAO.remove(timezoneId);
