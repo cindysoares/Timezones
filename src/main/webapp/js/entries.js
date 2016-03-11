@@ -4,7 +4,7 @@
 	timezonesApp.factory('findAllService',  function($http) {
 		var myService = {
 				async: function (userId) {
-					var promise = $http.post("/timezones/" + userId, null, {params: {}})
+					var promise = $http.get("/timezones/" + userId, {params: {}})
 					.then(function(response){
 						return response.data;
 					});

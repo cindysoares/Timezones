@@ -3,6 +3,7 @@ package br.com.timezones.rest;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -24,7 +25,7 @@ public class TimezoneManager {
 	private UserDAO userDAO = DAOFactory.getUserDAO();
 	private TimezoneDAO timezoneDAO = DAOFactory.getTimezoneDAO();
 	
-	@POST
+	@GET
 	@Path("/{userId}")
 	public List<Timezone> findAll(@PathParam("userId") Integer userId) {
 		User user = userDAO.find(userId);

@@ -98,7 +98,7 @@ public class TimezoneManagerTest  extends JerseyTest {
     	WebTarget target = target();
     	@SuppressWarnings("rawtypes")
 		List responseMsg = target.path("/timezones/1")
-    			.request(MediaType.APPLICATION_JSON).post(null, List.class);
+    			.request(MediaType.APPLICATION_JSON).get(List.class);
     	Assert.assertNotNull(responseMsg);
     	Assert.assertEquals(4, responseMsg.size());
     }
@@ -115,7 +115,7 @@ public class TimezoneManagerTest  extends JerseyTest {
     	WebTarget target = target();
     	@SuppressWarnings("rawtypes")
 		List responseMsg = target.path("/timezones/3")
-    			.request(MediaType.APPLICATION_JSON).post(null, List.class);
+    			.request(MediaType.APPLICATION_JSON).get(List.class);
     	Assert.assertNotNull(responseMsg);
     	Assert.assertTrue(responseMsg.size()>=5);
     }
