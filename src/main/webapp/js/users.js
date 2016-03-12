@@ -17,12 +17,7 @@
 	usersApp.factory('usersAddService', function($http) {
 		var myService = {
 				async: function (newUser) {
-					var promise = $http.post("/users/add", null, {params:{
-						name: newUser.name,
-						email: newUser.email,
-						password: newUser.password,
-						profile: newUser.profile
-					}})
+					var promise = $http.post("/users", newUser)
 					.then(function(response){
 						return response.data;
 					});
@@ -95,7 +90,7 @@
 			this.list.sort(function(a, b){return a.name.localeCompare(b.name)});
 		};
 		this.addUser = function() {
-			if(this.newUser.password != this.newUser.repeatedPassword) {
+			if(this.newUser.newPassword != this.repeatedPassword) {
 				this.$messages.warning = true;
 				return;
 			}
@@ -105,11 +100,14 @@
 					$scope.users.$messages.saveSuccess = true;
 					$scope.users.newUser = {};
 					$scope.users.setEditMode(false);
-					this.sortList();
+					$scope.users.sortList();
 				} else {
 					$scope.users.$messages.warning = true;
 				}
+			}, function errorCallback(response){
+				$scope.users.$messages.error = true;
 			});
+			this.repeatedPassword = null;
 		};
 		this.removeUser = function(userToRemove) {
 			this.selectedIndex = -1

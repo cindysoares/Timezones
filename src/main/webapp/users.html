@@ -38,14 +38,14 @@
 			<li class="list-group-item" ng-show="users.isEditMode({})">
 				<ul class="nav nav-tabs nav-justified">
 					<li><input type="text" class="form-control" ng-model="users.newUser.name" placeholder="name" required/></li>
-					<li><input type="email" class="form-control" ng-model="users.newUser.email" placeholder="e-mail" required/></li>
-					<li><input type="password" class="form-control" ng-model="users.newUser.password" placeholder="new password" required/></li>
-					<li><input type="password" class="form-control" ng-model="users.newUser.repeatedPassword" placeholder="repeat password" required/></li>
+					<li><input type="text" class="form-control" ng-model="users.newUser.email" placeholder="e-mail" required/></li>
+					<li><input type="password" class="form-control" ng-model="users.newUser.newPassword" placeholder="new password" required/></li>
+					<li><input type="password" class="form-control" ng-model="users.repeatedPassword" placeholder="repeat password" required/></li>
 					<li>
 						<select class="form-control" ng-model="users.newUser.profile"  placeholder="profile" required>
-						    <option value="user">USER</option>
-						    <option value="user_manager">USER_MANAGER</option>
-						    <option value="admin_manager">ADMIN_MANAGER</option>
+						    <option value="USER">USER</option>
+						    <option value="USER_MANAGER">USER_MANAGER</option>
+						    <option value="ADMIN_MANAGER">ADMIN_MANAGER</option>
 						</select>
 					</li>
 					<li>

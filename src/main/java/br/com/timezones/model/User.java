@@ -15,6 +15,7 @@ public class User {
 	private Profile profile;
 	
 	private transient String password;
+	private String newPassword;
 	
 	public User() {
 	}
@@ -64,6 +65,12 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+	public String getNewPassword() {
+		return newPassword;
 	}
 
 	@Override

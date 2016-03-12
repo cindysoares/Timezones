@@ -30,6 +30,10 @@ public class MemoryUserDAO implements UserDAO {
 	}
 	
 	public User save(User user) {
+		if(user.getNewPassword()!=null) {
+			user.setPassword(user.getNewPassword());
+			user.setNewPassword(null);
+		}		
 		return add(user);
 	}
 	

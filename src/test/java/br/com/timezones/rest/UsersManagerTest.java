@@ -2,6 +2,7 @@ package br.com.timezones.rest;
 
 import java.util.Set;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
@@ -27,17 +28,15 @@ public class UsersManagerTest extends JerseyTest {
     @Test
     public void test_addUser() {
     	WebTarget target = target();
-		User responseMsg = target.path("/users/add")
-        		.queryParam("name", "Michael")
-        		.queryParam("email", "michael@email.com")
-        		.queryParam("password", "pass")
-        		.queryParam("profile", Profile.USER.name())
-        		.request(MediaType.APPLICATION_JSON).post(null, User.class);
+		User responseMsg = target.path("/users")
+        		.request(MediaType.APPLICATION_JSON)
+        		.post(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.USER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNotNull("Didn´t add the user.", responseMsg);
         Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
         Assert.assertEquals("Michael", responseMsg.getName());
         Assert.assertEquals("michael@email.com", responseMsg.getEmail());
         Assert.assertEquals(null, responseMsg.getPassword());
+        Assert.assertEquals(null, responseMsg.getNewPassword());
         Assert.assertEquals(Profile.USER, responseMsg.getProfile());
     }
     

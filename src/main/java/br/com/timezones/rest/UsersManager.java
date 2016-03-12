@@ -23,11 +23,8 @@ public class UsersManager {
 	private UserDAO dao = DAOFactory.getUserDAO();
 	
 	@POST
-	@Path("/add")
-	public User addUser(@QueryParam("name") String name, @QueryParam("email") String email,
-			@QueryParam("password") String password, @QueryParam("profile") String profileName) {
-		Profile profile = getProfile(profileName);
-		User user = new User(name, email, password, profile);
+	@Path("/")
+	public User addUser(User user) {
 		return dao.save(user);
 	}
 
