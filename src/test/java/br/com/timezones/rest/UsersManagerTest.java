@@ -43,12 +43,9 @@ public class UsersManagerTest extends JerseyTest {
     @Test
     public void test_updateUser() {
     	WebTarget target = target();
-    	User responseMsg = target.path("/users/update/4")
-        		.queryParam("name", "Michael")
-        		.queryParam("email", "michael@email.com")
-        		.queryParam("password", "pass")
-        		.queryParam("profile", Profile.USER_MANAGER.name())
-        		.request(MediaType.APPLICATION_JSON).post(null, User.class);
+    	User responseMsg = target.path("/users/4")
+        		.request(MediaType.APPLICATION_JSON)
+        		.put(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.USER_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNotNull("Didn´t update the user.", responseMsg);
         Assert.assertEquals("Wrong id.", new Integer(4), responseMsg.getId());
         Assert.assertEquals("Michael", responseMsg.getName());
@@ -60,19 +57,16 @@ public class UsersManagerTest extends JerseyTest {
     @Test
     public void test_updateNonExistentUser() {
     	WebTarget target = target();
-    	User responseMsg = target.path("/users/update/999")
-        		.queryParam("name", "Michael")
-        		.queryParam("email", "michael@email.com")
-        		.queryParam("password", "pass")
-        		.queryParam("profile", Profile.USER_MANAGER.name())
-        		.request(MediaType.APPLICATION_JSON).post(null, User.class);
+    	User responseMsg = target.path("/users/999")
+        		.request(MediaType.APPLICATION_JSON)
+        		.put(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.USER_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNull("Updated a non-existent user.", responseMsg);
     }
     
     @Test
     public void test_removeUser() {
     	WebTarget target = target();
-    	boolean responseMsg = target.path("/users/remove/4")
+    	boolean responseMsg = target.path("/users/4")
         		.request(MediaType.APPLICATION_JSON).delete(Boolean.class);
         Assert.assertTrue("Didn´t remove the user.", responseMsg);
     }
@@ -80,7 +74,7 @@ public class UsersManagerTest extends JerseyTest {
     @Test
     public void test_removeNonExistentUser() {
     	WebTarget target = target();
-    	boolean responseMsg = target.path("/users/remove/9999")
+    	boolean responseMsg = target.path("/users/9999")
         		.request(MediaType.APPLICATION_JSON).delete(Boolean.class);
         Assert.assertFalse("Removed a non-existend user.", responseMsg);
     }
@@ -88,7 +82,7 @@ public class UsersManagerTest extends JerseyTest {
     @Test
     public void test_getAll() {
     	WebTarget target = target();
-    	Set<?> responseMsg = target.path("/users/all")
+    	Set<?> responseMsg = target.path("/users")
         		.request(MediaType.APPLICATION_JSON).get(Set.class);
         Assert.assertNotNull("Didn´t find all users.", responseMsg);
     }

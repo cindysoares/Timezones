@@ -48,8 +48,8 @@ public class MemoryUserDAO implements UserDAO {
 		if(userToUpdate==null) return null;
 		userToUpdate.setName(user.getName());
 		userToUpdate.setEmail(user.getEmail());
-		if(user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
-			userToUpdate.setPassword(user.getPassword());
+		if(user.getNewPassword() != null && !user.getNewPassword().trim().isEmpty()) {
+			userToUpdate.setPassword(user.getNewPassword());
 		}
 		userToUpdate.setProfile(user.getProfile());
 		return userToUpdate;

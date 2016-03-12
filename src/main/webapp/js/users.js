@@ -4,7 +4,7 @@
 	usersApp.factory('usersFindAllService', function($http) {
 		var myService = {
 				async: function () {
-					var promise = $http.get("/users/all")
+					var promise = $http.get("/users")
 					.then(function(response){
 						return response.data;
 					});
@@ -30,7 +30,7 @@
 	usersApp.factory('usersRemoveService', function($http) {
 		var myService = {
 				async: function (userId) {
-					var promise = $http.delete("/users/remove/"+userId)
+					var promise = $http.delete("/users/"+userId)
 					.then(function(response){
 						return response.data;
 					});
@@ -43,12 +43,7 @@
 	usersApp.factory('usersUpdateService', function($http) {
 		var myService = {
 				async: function (user) {
-					var promise = $http.post("/users/update/"+user.id, null, {params:{
-						name: user.name,
-						email: user.email,
-						password: user.password,
-						profile: user.profile
-					}})
+					var promise = $http.put("/users/"+user.id, user)
 					.then(function(response){
 						return response.data;
 					});
@@ -128,6 +123,8 @@
 				} else {
 					$scope.users.$messages.warning = true;
 				}
+			}, function errorCallback(response){
+				$scope.users.$messages.error = true;
 			});			
 		};
 		this.updateUser = function(userToUpdate) {
@@ -149,6 +146,8 @@
 					$scope.users.$messages = {};
 					$scope.users.$messages.warning = true;
 				}
+			}, function errorCallback(response){
+				$scope.users.$messages.error = true;
 			});		
 		};
 		this.listMeals = function(user) {
