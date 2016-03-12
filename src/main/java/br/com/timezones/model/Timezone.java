@@ -24,16 +24,11 @@ public class Timezone {
 	public Timezone() {
 	}
 	
-	public Timezone(Integer id, String name, String city, Integer gmtDifference, Integer userId) {
-		this.id = id;
+	public Timezone(String name, String city, Integer gmtDifference, Integer userId) {
 		this.name = name;
 		this.city = city;
 		setGmtDifference(gmtDifference);
 		this.userId = userId;
-	}
-	
-	public Timezone(String name, String city, Integer gmtDifference, Integer userId) {
-		this(null, name, city, gmtDifference, userId);
 	}
 
 	public void setId(Integer id) {

@@ -72,7 +72,7 @@ public class TimezoneManagerTest  extends JerseyTest {
         WebTarget target = target();
 		Timezone responseMsg = target.path("/timezones/1/1")
         		.request(MediaType.APPLICATION_JSON)
-        		.put(Entity.entity(new Timezone(1, "VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
+        		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNotNull("Didn´t update the timezone.", responseMsg);
         Assert.assertEquals(new Integer(1), responseMsg.getId());
         Assert.assertEquals("VUT", responseMsg.getName());
@@ -85,7 +85,7 @@ public class TimezoneManagerTest  extends JerseyTest {
         WebTarget target = target();
         Timezone responseMsg = target.path("/timezones/1/999")
         		.request(MediaType.APPLICATION_JSON)
-        		.put(Entity.entity(new Timezone(999, "VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
+        		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNull("Updated a non-existent timezone.", responseMsg);
     }
     

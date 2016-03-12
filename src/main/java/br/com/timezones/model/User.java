@@ -20,18 +20,13 @@ public class User {
 	public User() {
 	}
 	
-	public User(Integer id, String name, String email, String password, Profile profile) {
-		this.id = id;
+	public User(String name, String email, String password, Profile profile) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.profile = profile;
 	}
-	
-	public User(String name, String email, String password, Profile profile) {
-		this(null, name, email, password, profile);
-	}
-	
+		
 	public void setId(Integer id) {
 		this.id = id;
 	}

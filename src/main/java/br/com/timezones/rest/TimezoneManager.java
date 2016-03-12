@@ -56,6 +56,7 @@ public class TimezoneManager {
 	public Timezone updateTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId, 
 			Timezone timezone) {
 		User user = userDAO.find(userId);
+		timezone.setId(timezoneId);
 		return timezoneDAO.update(timezone);
 	}
 
