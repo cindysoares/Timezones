@@ -34,11 +34,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 	public static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Basic";
-    
-	private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
-			.entity("You cannot access this resource").build();
-	private static final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
-			.entity("Access blocked for all users !!").build();
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -46,7 +41,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         if(!method.isAnnotationPresent(PermitAll.class)) {
         	if(method.isAnnotationPresent(DenyAll.class)) {
-                requestContext.abortWith(ACCESS_FORBIDDEN);
+                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+            			.entity("Access blocked for all users.").build());
                 return;
             }
         }
@@ -54,7 +50,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         final List<String> authorization = requestContext.getHeaders().get(AUTHORIZATION_PROPERTY);
         if(authorization == null || authorization.isEmpty())
         {
-            requestContext.abortWith(ACCESS_DENIED);
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+        			.entity("Page requires sending configured client application identification header.").build());
             return;
         }
           
@@ -67,7 +64,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         
         User user = getUser(username, password);
         if(user == null) {
-        	requestContext.abortWith(ACCESS_DENIED);
+        	requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+        			.entity("Username/password invalid.").build());
             return;
         }
         
@@ -76,7 +74,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
               
             if(!isUserAllowed(user, rolesSet)) {
-                requestContext.abortWith(ACCESS_DENIED);
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+            			.entity("You are not allowed to execute this operation.").build());
                 return;
             }
         }        
