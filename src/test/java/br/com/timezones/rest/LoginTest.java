@@ -6,11 +6,14 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import br.com.timezones.model.Profile;
 import br.com.timezones.model.User;
 
 public class LoginTest extends RestTest {
+	
+	public ExpectedException expectedException = ExpectedException.none();
     
     @Override
     protected String getBasePath() {
@@ -41,6 +44,7 @@ public class LoginTest extends RestTest {
 
     @Test(expected=NotAuthorizedException.class)
     public void test_loginUserWhenUserDoesntExists() {
+    	expectedException.expect(NotAuthorizedException.class);
         target.queryParam("email", "any@email.com")
         		.request(MediaType.APPLICATION_JSON)
         		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "any@email.com")

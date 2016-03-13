@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.timezones.model.Timezone;
+import br.com.timezones.model.User;
 
 public class MemoryTimezoneDAO implements TimezoneDAO {
+	
+	private static UserDAO userDAO = DAOFactory.getUserDAO();
 	
 	private static final List<Timezone> timezones = new LinkedList<Timezone>();
 	private static int counter = 0;
@@ -34,11 +37,19 @@ public class MemoryTimezoneDAO implements TimezoneDAO {
 	}
 
 	@Override
-	public Timezone save(Timezone value) {
+	public Timezone save(Timezone value) {		
 		return add(value);
+	}
+
+	private static void validateUserId(Timezone value) {
+		User user = userDAO.find(value.getUserId());
+		if(user == null) {
+			throw new IllegalArgumentException("User id doesn't exists: " + value.getUserId());
+		}
 	}
 	
 	private static Timezone add(Timezone newValue) {
+		validateUserId(newValue);
 		newValue.setId(++counter);
 		boolean wasAdded = timezones.add(newValue);		
 		return wasAdded? newValue:null;
@@ -46,6 +57,7 @@ public class MemoryTimezoneDAO implements TimezoneDAO {
 	
 	@Override
 	public Timezone update(Timezone newValues) {
+		validateUserId(newValues);
 		Timezone timezoneToUpdate = find(newValues.getId());
 		if(timezoneToUpdate != null) {
 			timezoneToUpdate.setName(newValues.getName());

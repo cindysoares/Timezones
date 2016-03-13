@@ -40,30 +40,22 @@ public class TimezoneManager {
 	}
 	
 	@POST
-	@Path("/{userId}")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Timezone addTimezone(@PathParam("userId") Integer userId, Timezone timezone) {
-		User user = userDAO.find(userId);
-		if(user == null) return null;
-		if(user != null) {
-			timezone = timezoneDAO.save(timezone);
-		}
-		return timezone;
+	public Timezone addTimezone(Timezone timezone) {
+		return timezoneDAO.save(timezone);
 	}
 	
 	@PUT
-	@Path("/{userId}/{timezoneId}")
-	public Timezone updateTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId, 
-			Timezone timezone) {
-		User user = userDAO.find(userId);
+	@Path("/{timezoneId}")
+	public Timezone updateTimezone(@PathParam("timezoneId") Integer timezoneId, Timezone timezone) {
 		timezone.setId(timezoneId);
 		return timezoneDAO.update(timezone);
 	}
 
 	@DELETE
-	@Path("/remove/{userId}/{timezoneId}")
-	public boolean removeTimezone(@PathParam("userId") Integer userId, @PathParam("timezoneId") Integer timezoneId) {
-		User user = userDAO.find(userId);
+	@Path("/{timezoneId}")
+	public boolean removeTimezone(@PathParam("timezoneId") Integer timezoneId) {
 		return timezoneDAO.remove(timezoneId);
 	}
 

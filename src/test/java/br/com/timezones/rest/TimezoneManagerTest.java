@@ -2,38 +2,33 @@ package br.com.timezones.rest;
 
 import java.util.List;
 
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import br.com.timezones.model.Timezone;
 
-public class TimezoneManagerTest  extends JerseyTest {
+public class TimezoneManagerTest extends RestTest {
 	
-    @Override
-    protected ResourceConfig configure() {
-        enable(TestProperties.LOG_TRAFFIC);
-        enable(TestProperties.DUMP_ENTITY);
-
-        return new JerseyConfig();
-    }
-    
-    @BeforeClass
-    public static void createScenario() {
-    }
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none(); 
+	
+    protected String getBasePath() {
+    	return "/timezones";
+    };
     
     @Test
     public void test_addTimezone() {
-        WebTarget target = target();
-		Timezone responseMsg = target.path("/timezones/1")
+		Timezone responseMsg = target
         		.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
         		.post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 1), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNotNull("Didn´t add the timezone.", responseMsg);
         Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
@@ -44,34 +39,41 @@ public class TimezoneManagerTest  extends JerseyTest {
     
     @Test
     public void test_addTimezoneToANonExistentUser() {
-        WebTarget target = target();
-        Timezone responseMsg = target.path("/timezones/999")
-        		.request(MediaType.APPLICATION_JSON)
-        		.post(Entity.entity(new Timezone(), MediaType.APPLICATION_JSON), Timezone.class);
-        Assert.assertNull("Added the timezone to a non-existent .", responseMsg);
+    	expectedException.expect(ClientErrorException.class);
+    	expectedException.expectMessage("User id doesn't exists: 999");
+    	
+       target.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
+        		.post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 999), MediaType.APPLICATION_JSON), Timezone.class);        
     }
 
     @Test
     public void test_removeTimezone() {
-        WebTarget target = target();
-		Boolean responseMsg = target.path("/timezones/remove/1/2")
-        		.request(MediaType.APPLICATION_JSON).delete(Boolean.class);
+		Boolean responseMsg = target.path("/2")
+        		.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
+        		.delete(Boolean.class);
         Assert.assertTrue("Didn´t remove the timezone.", responseMsg);
     }
 
     @Test
     public void test_removeNonExistentTimezone() {
-        WebTarget target = target();
-		Boolean responseMsg = target.path("/timezones/remove/1/9999")
-        		.request(MediaType.APPLICATION_JSON).delete(Boolean.class);
+		Boolean responseMsg = target.path("/9999")
+        		.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
+        		.delete(Boolean.class);
         Assert.assertFalse("Removed a non-existent timezone.", responseMsg);
     }
 
     @Test
     public void test_updateTimezone() {
-        WebTarget target = target();
-		Timezone responseMsg = target.path("/timezones/1/1")
+		Timezone responseMsg = target.path("/1")
         		.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
         		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNotNull("Didn´t update the timezone.", responseMsg);
         Assert.assertEquals(new Integer(1), responseMsg.getId());
@@ -81,20 +83,23 @@ public class TimezoneManagerTest  extends JerseyTest {
     }
     
     @Test
-    public void test_updateTimezoneToANonExistentUser() {
-        WebTarget target = target();
-        Timezone responseMsg = target.path("/timezones/1/999")
+    public void test_updateANonExistentTimezone() {
+        Timezone responseMsg = target.path("/999")
         		.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
         		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNull("Updated a non-existent timezone.", responseMsg);
     }
     
     @Test
     public void test_findAllWhenRegularUser() {
-    	WebTarget target = target();
     	@SuppressWarnings("rawtypes")
-		List responseMsg = target.path("/timezones/1")
-    			.request(MediaType.APPLICATION_JSON).get(List.class);
+		List responseMsg = target.path("/1")
+    			.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
+    			.get(List.class);
     	Assert.assertNotNull(responseMsg);
     	Assert.assertEquals(4, responseMsg.size());
     }
@@ -108,10 +113,12 @@ public class TimezoneManagerTest  extends JerseyTest {
     
     @Test
     public void test_findAllWhenAdminUser() {
-    	WebTarget target = target();
     	@SuppressWarnings("rawtypes")
-		List responseMsg = target.path("/timezones/3")
-    			.request(MediaType.APPLICATION_JSON).get(List.class);
+		List responseMsg = target.path("/3")
+    			.request(MediaType.APPLICATION_JSON)
+        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "admin@email.com")
+        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "4321")
+    			.get(List.class);
     	Assert.assertNotNull(responseMsg);
     	Assert.assertTrue(responseMsg.size()>=5);
     }
