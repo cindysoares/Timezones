@@ -15,7 +15,6 @@ configurations {
 dependencies {
 	compile 'javax.servlet:servlet-api:2.4'
 	compile 'org.glassfish.jersey.containers:jersey-container-servlet-core:2.22.1'
-	//compile 'org.glassfish.jersey:jersey-bom:2.22.1'
 	compile 'org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.22.1'
 	compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.22.1'
     

@@ -12,6 +12,7 @@ public class JerseyConfig extends ResourceConfig {
         packages(getClass().getPackage().getName());
         register(new JacksonFeature());
         register(LoggingFilter.class);
+        register(AuthenticationFilter.class);
         property(ServerProperties.TRACING, TracingConfig.ON_DEMAND.name());
 	}
 	
