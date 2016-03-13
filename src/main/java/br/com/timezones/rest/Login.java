@@ -18,12 +18,8 @@ public class Login {
 	
 	@GET
 	@Path("/login")
-	public User login(@QueryParam("email") String email, @QueryParam("password") String password) {
-		User user = dao.find(email);
-		if(user == null || !password.equals(user.getPassword())) {
-			return null;
-		}
-		return user;
+	public User login(@QueryParam("email") String email) {
+		return dao.find(email);
 	}
 
 }
