@@ -1,41 +1,22 @@
 package br.com.timezones.rest;
 
 import javax.ws.rs.NotAuthorizedException;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import br.com.timezones.model.Profile;
 import br.com.timezones.model.User;
 
-public class LoginTest extends JerseyTest {
-
-	HttpAuthenticationFeature authFilter;
-	WebTarget target;
-	
+public class LoginTest extends RestTest {
+    
     @Override
-    protected ResourceConfig configure() {
-        enable(TestProperties.LOG_TRAFFIC);
-        enable(TestProperties.DUMP_ENTITY);
-
-        return new JerseyConfig();
+    protected String getBasePath() {
+    	return "/login";
     }
     
-    @Before
-    @Override
-    public void setUp() throws Exception {
-    	super.setUp();
-    	authFilter = HttpAuthenticationFeature.basicBuilder().build();
-    	target = target("/login").register(authFilter);
-    }
-
     @Test
     public void test_loginUserSuccess() {
         User responseMsg = target.queryParam("email", "cindy@email.com")
