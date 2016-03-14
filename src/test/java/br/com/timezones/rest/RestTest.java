@@ -34,6 +34,10 @@ public abstract class RestTest extends JerseyTest {
 	protected Builder requestBuilder() {
 		return requestBuilder("/", "cindy@email.com", "senha");
 	}
+	
+	protected Builder requestBuilder(String email, String password) {
+		return requestBuilder("/", email, password);
+	}
 
 	protected Builder requestBuilder(String path) {
 		return requestBuilder(path, "cindy@email.com", "senha");

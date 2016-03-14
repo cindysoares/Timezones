@@ -9,11 +9,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import br.com.timezones.dao.DAOFactory;
 import br.com.timezones.dao.TimezoneDAO;
-import br.com.timezones.dao.UserDAO;
 import br.com.timezones.model.Profile;
 import br.com.timezones.model.Timezone;
 import br.com.timezones.model.User;
@@ -22,17 +23,15 @@ import br.com.timezones.model.User;
 @Produces(MediaType.APPLICATION_JSON)
 public class TimezoneManager {
 	
-	private UserDAO userDAO = DAOFactory.getUserDAO();
 	private TimezoneDAO timezoneDAO = DAOFactory.getTimezoneDAO();
 	
 	@GET
-	@Path("/{userId}")
-	public List<Timezone> findAll(@PathParam("userId") Integer userId) {
-		User user = userDAO.find(userId);
+	public List<Timezone> findAll(@Context ContainerRequestContext request) {
+		User user = (User) request.getProperty("loggedUser");
 		if(Profile.ADMIN_MANAGER.equals(user.getProfile())) {
 			return timezoneDAO.findAll();
 		} else if(Profile.USER.equals(user.getProfile())) {
-			return timezoneDAO.findByUser(userId);
+			return timezoneDAO.findByUser(user.getId());
 		} 
 		
 		throw new UnsupportedOperationException();
