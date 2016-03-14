@@ -17,7 +17,7 @@
 	timezonesApp.factory('addTimezoneService',  function($http) {
 		var myService = {
 				async: function (userId, timezone) {
-					var promise = $http.post("/timezones/" + userId, timezone)
+					var promise = $http.post("/timezones", timezone)
 					.then(function(response){
 						return response.data;
 					});
@@ -30,7 +30,7 @@
 	timezonesApp.factory('removeTimezoneService',  function($http) {
 		var myService = {
 				async: function (userId, timezoneId) {
-					var promise = $http.delete("/timezones/remove/" + userId + "/" + timezoneId)
+					var promise = $http.delete("/timezones/" + timezoneId)
 					.then(function(response){
 						return response.data;
 					});
@@ -43,7 +43,7 @@
 	timezonesApp.factory('updateTimezoneService',  function($http) {
 		var myService = {
 				async: function (userId, timezone) {
-					var promise = $http.put("/timezones/" + userId + "/" + timezone.id, timezone)
+					var promise = $http.put("/timezones/" + timezone.id, timezone)
 					.then(function(response){
 						return response.data;
 					});
@@ -124,6 +124,7 @@
 			});			
 		};
 		this.addTimezone = function() {
+			this.editedTimezone.userId = $scope.timezones.loggedUser.id;
 			addTimezoneService.async(this.selectedUser.id, this.editedTimezone).then(function(d){
 				if (d != null) {
 					$scope.editTimezone.list.push(d);
