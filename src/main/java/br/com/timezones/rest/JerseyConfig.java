@@ -13,7 +13,7 @@ public class JerseyConfig extends ResourceConfig {
         register(new JacksonFeature());
         register(LoggingFilter.class);
         register(AuthenticationFilter.class);
-        register(AppExceptionMapper.class);
+        //register(AppExceptionMapper.class);
         property(ServerProperties.TRACING, TracingConfig.ON_DEMAND.name());
 	}
 	

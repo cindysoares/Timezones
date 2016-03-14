@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
@@ -18,10 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import org.glassfish.jersey.internal.util.Base64;
-
-import br.com.timezones.dao.DAOFactory;
-import br.com.timezones.dao.UserDAO;
+import br.com.timezones.authentication.AuthenticationManager;
 import br.com.timezones.model.User;
 
 @Provider
@@ -29,11 +25,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 	@Context
 	private ResourceInfo resourceInfo;
-	
-	private UserDAO userDAO = DAOFactory.getUserDAO();
 
 	public static final String AUTHORIZATION_PROPERTY = "Authorization";
-    private static final String AUTHENTICATION_SCHEME = "Basic";
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -54,20 +47,15 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         			.entity("Page requires sending configured client application identification header.").build());
             return;
         }
-          
-        String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
-        String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
-
-        StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-        String username = tokenizer.nextToken();
-        String password = tokenizer.nextToken();
         
-        User user = getUser(username, password);
+        User user = AuthenticationManager.validateToken(authorization.get(0));
         if(user == null) {
         	requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
         			.entity("Username/password invalid.").build());
             return;
         }
+        
+        requestContext.setProperty("loggedUser", user);
         
         if(method.isAnnotationPresent(RolesAllowed.class)) {
             RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
@@ -79,14 +67,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 return;
             }
         }        
-	}
-	
-	private User getUser(String email, String password) {
-		User user = userDAO.find(email);
-		if(user == null || !password.equals(user.getPassword())) {
-			return null;
-		}
-		return user;
 	}
 	
 	private boolean isUserAllowed(User user, final Set<String> rolesSet) {		
