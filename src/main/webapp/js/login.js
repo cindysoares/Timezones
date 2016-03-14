@@ -5,10 +5,18 @@
 	loginApp.factory('loginFactory', function($http) {
 		var myService = {
 				async: function (emailValue, passwordValue) {
-					var promise = $http.get('/login', { params: {email: emailValue, password: passwordValue} })
-					.then(function(response){
-						return response.data;
-					});
+					var promise = $http.post('/login', {email: emailValue, password: passwordValue}, 
+							{headers: {'Content-Type': "application/x-www-form-urlencoded"},
+							 transformRequest: function(obj) {
+					                var str = [];
+					                for(var p in obj)
+					                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					                return str.join("&");
+					            }
+							})
+							.then(function(response){
+								return response.data;
+							});
 					return promise;
 				} // FIXME Don´t pass password as a param.
 		};

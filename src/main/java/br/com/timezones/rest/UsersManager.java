@@ -22,7 +22,6 @@ public class UsersManager {
 	private UserDAO dao = DAOFactory.getUserDAO();
 	
 	@POST
-	@Path("/")
 	public User addUser(User user) {
 		return dao.save(user);
 	}
@@ -41,7 +40,6 @@ public class UsersManager {
 	}
 
 	@GET
-	@Path("/")
 	public Set<User> getAll() {
 		return dao.findAll();
 	}

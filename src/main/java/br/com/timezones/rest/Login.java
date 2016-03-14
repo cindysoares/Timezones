@@ -1,9 +1,11 @@
 package br.com.timezones.rest;
 
-import javax.ws.rs.GET;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import br.com.timezones.dao.DAOFactory;
@@ -16,10 +18,17 @@ public class Login {
 	
 	private UserDAO dao = DAOFactory.getUserDAO();
 	
-	@GET
+	@PermitAll
+	@POST
 	@Path("/login")
-	public User login(@QueryParam("email") String email) {
-		return dao.find(email);
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public User login(@FormParam("email") String email, @FormParam("password") String password) {
+		System.out.println(email + ":" + password);
+		User user = dao.find(email);
+		if(user == null || !password.equals(user.getPassword())) {
+        	return null;
+		}
+		return user;
 	}
 
 }

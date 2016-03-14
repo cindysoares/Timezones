@@ -20,7 +20,7 @@ public abstract class RestTest extends JerseyTest {
 	public void setUp() throws Exception {
 		super.setUp();
 		authFilter = HttpAuthenticationFeature.basicBuilder().build();
-		target = target(getBasePath()).register(authFilter);
+		target = target(getBasePath());
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public abstract class RestTest extends JerseyTest {
 	}
 	
 	protected Builder requestBuilder(String path, String email, String password) {
-		return target.path(path).request(MediaType.APPLICATION_JSON)
+		return target.register(authFilter).path(path).request(MediaType.APPLICATION_JSON)
 				.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, email)
 				.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, password);
 	}

@@ -1,20 +1,17 @@
 package br.com.timezones.rest;
 
-import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import br.com.timezones.model.Profile;
 import br.com.timezones.model.User;
 
 public class LoginTest extends RestTest {
 	
-	public ExpectedException expectedException = ExpectedException.none();
-    
     @Override
     protected String getBasePath() {
     	return "/login";
@@ -22,34 +19,38 @@ public class LoginTest extends RestTest {
     
     @Test
     public void test_loginUserSuccess() {
-        User responseMsg = target.queryParam("email", "cindy@email.com")
+    	Form loginForm = new Form();
+    	loginForm.param("email", "cindy@email.com");
+    	loginForm.param("password", "senha");
+        User responseMsg = target
         		.request(MediaType.APPLICATION_JSON)
-        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
-        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "senha")
-        	    .get(User.class);
+        	    .post(Entity.entity(loginForm, MediaType.APPLICATION_FORM_URLENCODED), User.class);
         Assert.assertNotNull("Didn´t find any user.", responseMsg);
         Assert.assertEquals("Wrong user.", "Cindy Soares", responseMsg.getName());
         Assert.assertEquals("Wrong profile.", Profile.USER, responseMsg.getProfile());
         Assert.assertNull("Shouldn´t serialize password.", responseMsg.getPassword());
     }
     
-    @Test(expected=NotAuthorizedException.class)
+    @Test
     public void test_loginUserWhenPasswordIsWrong() {
-        target.queryParam("email", "cindy@email.com")
-        		.request(MediaType.APPLICATION_JSON)
-        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "cindy@email.com")
-        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "xxxx")
-        		.get(User.class);
+    	Form loginForm = new Form();
+    	loginForm.param("email", "cindy@email.com");
+    	loginForm.param("password", "xxxx");
+        
+    	User responseMsg = target.request(MediaType.APPLICATION_JSON)
+        		.post(Entity.entity(loginForm, MediaType.APPLICATION_FORM_URLENCODED), User.class);
+    	Assert.assertNull("Shouldn't find any user.", responseMsg);
     }
 
-    @Test(expected=NotAuthorizedException.class)
+    @Test
     public void test_loginUserWhenUserDoesntExists() {
-    	expectedException.expect(NotAuthorizedException.class);
-        target.queryParam("email", "any@email.com")
-        		.request(MediaType.APPLICATION_JSON)
-        		.property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_USERNAME, "any@email.com")
-        	    .property(HttpAuthenticationFeature.HTTP_AUTHENTICATION_BASIC_PASSWORD, "xxxx")
-        		.get(User.class);
+    	Form loginForm = new Form();
+    	loginForm.param("email", "any@gmail.com");
+    	loginForm.param("password", "xxxx");
+
+    	User responseMsg = target.request(MediaType.APPLICATION_JSON)
+        		.post(Entity.entity(loginForm, MediaType.APPLICATION_FORM_URLENCODED), User.class);
+    	Assert.assertNull("Shouldn't find any user.", responseMsg);
     }
 
 }

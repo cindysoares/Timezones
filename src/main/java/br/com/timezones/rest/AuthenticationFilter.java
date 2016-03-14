@@ -39,14 +39,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		Method method = resourceInfo.getResourceMethod();
 
-        if(!method.isAnnotationPresent(PermitAll.class)) {
-        	if(method.isAnnotationPresent(DenyAll.class)) {
-                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-            			.entity("Access blocked for all users.").build());
-                return;
-            }
-        }
+        if(method.isAnnotationPresent(PermitAll.class)) return;
         
+        if(method.isAnnotationPresent(DenyAll.class)) {
+        	requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+        			.entity("Access blocked for all users.").build());
+        	return;
+        }
+
         final List<String> authorization = requestContext.getHeaders().get(AUTHORIZATION_PROPERTY);
         if(authorization == null || authorization.isEmpty())
         {

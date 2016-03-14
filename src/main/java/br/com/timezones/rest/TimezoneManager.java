@@ -40,8 +40,6 @@ public class TimezoneManager {
 	}
 	
 	@POST
-	@Path("/")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Timezone addTimezone(Timezone timezone) {
 		return timezoneDAO.save(timezone);
 	}
