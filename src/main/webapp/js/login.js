@@ -31,7 +31,7 @@
 		this.email = "cindy@email.com"; // FIXME remove this value 
 		this.password = "senha"; // FIXME remove this value 
 		this.$messages = {};
-		this.submit = function($http) {
+		this.submit = function() {
 			loginFactory.login(this.email, this.password).then(function(d) {				
 				if(!d) {
 					$scope.login.$messages.invalidLogin = true;
