@@ -3,6 +3,7 @@ package br.com.timezones.rest;
 import java.util.List;
 
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
@@ -21,6 +22,12 @@ public class TimezoneManagerTest extends RestTest {
     protected String getBasePath() {
     	return "/timezones";
     };
+    
+    @Test(expected=NotAuthorizedException.class)
+    public void test_addTimezoneWithoutAuthorizationToken() {
+		target.request()
+        		.post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 1), MediaType.APPLICATION_JSON), Timezone.class);
+    }
     
     @Test
     public void test_addTimezone() {
@@ -42,6 +49,11 @@ public class TimezoneManagerTest extends RestTest {
     	requestBuilder().post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 999), MediaType.APPLICATION_JSON), Timezone.class);        
     }
 
+    @Test(expected=NotAuthorizedException.class)
+    public void test_removeTimezoneWithoutAuthorizationToken() {
+		target.path("/2").request().delete(Boolean.class);
+    }
+
     @Test
     public void test_removeTimezone() {
 		Boolean responseMsg = requestBuilder("/2").delete(Boolean.class);
@@ -52,6 +64,12 @@ public class TimezoneManagerTest extends RestTest {
     public void test_removeNonExistentTimezone() {
 		Boolean responseMsg = requestBuilder("/9999").delete(Boolean.class);
         Assert.assertFalse("Removed a non-existent timezone.", responseMsg);
+    }
+
+    @Test(expected=NotAuthorizedException.class)
+    public void test_updateTimezoneWithoutAuthorizationToken() {
+		target.path("/1").request()
+        		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
     }
 
     @Test
@@ -72,6 +90,11 @@ public class TimezoneManagerTest extends RestTest {
         Assert.assertNull("Updated a non-existent timezone.", responseMsg);
     }
     
+    @Test(expected=NotAuthorizedException.class)
+    public void test_findAllWithoutAuthorizationToken() {
+		target.request().get(List.class);    	
+    }
+
     @Test
     public void test_findAllWhenRegularUser() {
     	@SuppressWarnings("rawtypes")
