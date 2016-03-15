@@ -2,6 +2,7 @@ package br.com.timezones.rest;
 
 import java.util.Set;
 
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
@@ -29,9 +30,9 @@ public class UsersManagerTest extends RestTest {
     }
     
     @Test
-    public void test_addUser() {
-		User responseMsg = requestBuilder()
-        		.post(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.USER), MediaType.APPLICATION_JSON), User.class);
+    public void test_addRegularUserWithoutAuthorizationToken() {
+		User responseMsg = target.path("/regular").request()
+        		.post(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.ADMIN_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNotNull("Didn´t add the user.", responseMsg);
         Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
         Assert.assertEquals("Michael", responseMsg.getName());
@@ -39,6 +40,31 @@ public class UsersManagerTest extends RestTest {
         Assert.assertEquals(null, responseMsg.getPassword());
         Assert.assertEquals(null, responseMsg.getNewPassword());
         Assert.assertEquals(Profile.USER, responseMsg.getProfile());
+    }
+    
+    @Test(expected=NotAuthorizedException.class)
+    public void test_addUserWithoutAuthorizationToken() {
+		target.request()
+        		.post(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.ADMIN_MANAGER), MediaType.APPLICATION_JSON), User.class);
+    }
+
+    @Test
+    public void test_addUser() {
+		User responseMsg = requestBuilder()
+        		.post(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.ADMIN_MANAGER), MediaType.APPLICATION_JSON), User.class);
+        Assert.assertNotNull("Didn´t add the user.", responseMsg);
+        Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
+        Assert.assertEquals("Michael", responseMsg.getName());
+        Assert.assertEquals("michael@email.com", responseMsg.getEmail());
+        Assert.assertEquals(null, responseMsg.getPassword());
+        Assert.assertEquals(null, responseMsg.getNewPassword());
+        Assert.assertEquals(Profile.ADMIN_MANAGER, responseMsg.getProfile());
+    }
+    
+    @Test(expected=NotAuthorizedException.class)
+    public void test_updateUserWithoutAuthorizationToken() {
+    	target.path("/4").request()
+        		.put(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.USER_MANAGER), MediaType.APPLICATION_JSON), User.class);
     }
     
     @Test
@@ -60,6 +86,11 @@ public class UsersManagerTest extends RestTest {
         Assert.assertNull("Updated a non-existent user.", responseMsg);
     }
     
+    @Test(expected=NotAuthorizedException.class)
+    public void test_removeUserWithoutAuthorizationToken() {
+    	target.path("/4").request().delete(Boolean.class);        
+    }
+    
     @Test
     public void test_removeUser() {
     	boolean responseMsg = requestBuilder("/4").delete(Boolean.class);
@@ -72,6 +103,11 @@ public class UsersManagerTest extends RestTest {
         Assert.assertFalse("Removed a non-existend user.", responseMsg);
     }
     
+    @Test(expected=NotAuthorizedException.class)
+    public void test_getAllWithoutAuthorizationToken() {
+    	target.request().get(Set.class);
+    }
+
     @Test
     public void test_getAll() {
     	Set<?> responseMsg = requestBuilder().get(Set.class);
