@@ -16,6 +16,8 @@ public class MemoryUserDAO implements UserDAO {
 		add(new User("User manager", "manager@email.com", "1234", Profile.USER_MANAGER));
 		add(new User("User admin", "admin@email.com", "4321", Profile.ADMIN_MANAGER));
 		add(new User("X", "x@email.com", "xxx", Profile.USER));
+		add(new User("Y", "y@email.com", "yyy", Profile.USER));
+		add(new User("Z", "z@email.com", "zzz", Profile.USER));
 	}
 	
 	protected MemoryUserDAO() {

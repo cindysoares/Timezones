@@ -3,6 +3,7 @@ package br.com.timezones.rest;
 import java.util.Set;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,6 +20,7 @@ import br.com.timezones.model.User;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"ADMIN_MANAGER", "USER_MANAGER"})
 public class UsersManager {
 
 	private UserDAO dao = DAOFactory.getUserDAO();
