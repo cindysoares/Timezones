@@ -16,8 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import br.com.timezones.authentication.AuthenticationManager;
-import br.com.timezones.dao.DAOFactory;
-import br.com.timezones.dao.TimezoneDAO;
 import br.com.timezones.model.Profile;
 import br.com.timezones.model.Timezone;
 import br.com.timezones.model.User;
@@ -26,8 +24,6 @@ import br.com.timezones.model.User;
 @RolesAllowed({"USER", "ADMIN_MANAGER"})
 @Produces(MediaType.APPLICATION_JSON)
 public class TimezoneManager {
-	
-	private TimezoneDAO timezoneDAO = DAOFactory.getTimezoneDAO();
 	
 	@GET
 	public List<Timezone> findAll(@Context ContainerRequestContext request) {
@@ -48,9 +44,15 @@ public class TimezoneManager {
 	
 	@PUT
 	@Path("/{timezoneId}")
-	public Timezone updateTimezone(@PathParam("timezoneId") Integer timezoneId, Timezone timezone) {
-		timezone.setId(timezoneId);
-		return timezoneDAO.update(timezone);
+	public Response updateTimezone(@PathParam("timezoneId") Integer timezoneId, Timezone timezone, @Context ContainerRequestContext request) {		
+		try {
+			timezone.setId(timezoneId);
+			User loggedUser = AuthenticationManager.getLoggedUser(request);
+			Timezone updatedTimezone = getStrategy(loggedUser).updateTimezone(timezone);
+			return Response.ok().entity(updatedTimezone).build();
+		} catch(UnsupportedOperationException e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
 	@DELETE

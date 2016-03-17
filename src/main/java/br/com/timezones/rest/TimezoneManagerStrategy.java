@@ -26,5 +26,9 @@ public abstract class TimezoneManagerStrategy {
 	public boolean removeTimezone(Integer timezoneId) {
 		return timezoneDAO.remove(timezoneId);
 	}
+	
+	public Timezone updateTimezone(Timezone timezone) {
+		return timezoneDAO.update(timezone);
+	}
 
 }

@@ -124,7 +124,32 @@ public class TimezoneManagerTest extends RestTest {
         Assert.assertEquals("VUT", responseMsg.getName());
         Assert.assertEquals("Port Vila", responseMsg.getCity());
         Assert.assertEquals(11, responseMsg.getGmtDifference());
+        Assert.assertEquals(new Integer(1), responseMsg.getUserId());
     }
+    
+    @Test(expected=NotAuthorizedException.class)
+    public void test_updateTimezoneSettingDifferentUserFromLoggedWhenRegularUserLogged() {
+		requestBuilder("/1")
+        		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 4), MediaType.APPLICATION_JSON), Timezone.class);
+    }
+    
+    @Test(expected=NotAuthorizedException.class)
+    public void test_updateTimezoneWhenManagerUserLogged() {
+		requestBuilder("/1")
+        		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 4), MediaType.APPLICATION_JSON), Timezone.class);
+    }
+
+    @Test
+    public void test_updateTimezoneSettingDifferentUserFromLoggedWhenAdminUserLogged() {
+		Timezone responseMsg = requestBuilder("/1", "admin@email.com", "4321")
+        		.put(Entity.entity(new Timezone("CST", "Mexico", -6, 4), MediaType.APPLICATION_JSON), Timezone.class);
+        Assert.assertNotNull("Didn´t update the timezone.", responseMsg);
+        Assert.assertEquals(new Integer(1), responseMsg.getId());
+        Assert.assertEquals("CST", responseMsg.getName());
+        Assert.assertEquals("Mexico", responseMsg.getCity());
+        Assert.assertEquals(-6, responseMsg.getGmtDifference());
+        Assert.assertEquals(new Integer(1), responseMsg.getUserId());
+    }    
     
     @Test
     public void test_updateANonExistentTimezone() {

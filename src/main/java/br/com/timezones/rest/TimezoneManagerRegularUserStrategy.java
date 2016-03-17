@@ -1,8 +1,8 @@
 package br.com.timezones.rest;
 
-import br.com.timezones.model.Timezone;
 import java.util.List;
 
+import br.com.timezones.model.Timezone;
 import br.com.timezones.model.User;
 
 public class TimezoneManagerRegularUserStrategy extends TimezoneManagerStrategy {	
@@ -22,6 +22,14 @@ public class TimezoneManagerRegularUserStrategy extends TimezoneManagerStrategy 
 			throw new UnsupportedOperationException();
 		}
 		return super.removeTimezone(timezoneId);
+	}
+	
+	@Override
+	public Timezone updateTimezone(Timezone timezone) {
+		if(timezone!=null && !user.getId().equals(timezone.getUserId())) {
+			throw new UnsupportedOperationException();
+		}
+		return super.updateTimezone(timezone);
 	}
 	
 }
