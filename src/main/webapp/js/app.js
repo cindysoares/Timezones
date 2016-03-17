@@ -5,7 +5,7 @@
             USER_MANAGER: ['users'],
             ADMIN_MANAGER: ['timezones', 'users'] };
 	
-	app.controller('TimezonesController', function($scope){
+	app.controller('TimezonesController', function($scope, $http){
 		this.loggedUser = null;
 		this.loggingShowing = false;
 		this.registeringShowing = false;
@@ -32,6 +32,7 @@
 		};		
 		$scope.logout = function(){
 		   $scope.$broadcast("logout", {loggedUser: $scope.timezones.loggedUser});
+		   delete $http.defaults.headers.common.Authorization;
 		};		
 	});
 	
