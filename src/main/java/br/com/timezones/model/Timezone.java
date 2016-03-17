@@ -72,6 +72,10 @@ public class Timezone {
 	public Integer getUserId() {
 		return userId;
 	}
+	
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
 	@Override
 	public int hashCode() {

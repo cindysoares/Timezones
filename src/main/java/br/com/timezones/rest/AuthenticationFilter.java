@@ -48,17 +48,22 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             return;
         }
         
-        User user = AuthenticationManager.validateToken(authorization.get(0));
+        User user = AuthenticationManager.validateToken(authorization.get(0), requestContext);
         if(user == null) {
         	requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
         			.entity("Username/password invalid.").build());
             return;
         }
         
-        requestContext.setProperty("loggedUser", user);
-        
+        Class<?> resourceClass = resourceInfo.getResourceClass();
+        RolesAllowed rolesAnnotation = null;
         if(method.isAnnotationPresent(RolesAllowed.class)) {
-            RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+        	rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+        } else if(resourceClass.isAnnotationPresent(RolesAllowed.class)) {
+        	rolesAnnotation = resourceClass.getAnnotation(RolesAllowed.class);
+        }
+        	
+        if(rolesAnnotation!=null) {
             Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
               
             if(!isUserAllowed(user, rolesSet)) {
@@ -70,10 +75,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	}
 	
 	private boolean isUserAllowed(User user, final Set<String> rolesSet) {		
-		if(user == null || rolesSet.contains(user.getProfile().name())) {
-			return false;
+		if(user != null && rolesSet.contains(user.getProfile().name())) {
+			return true;
 		}		
-		return true;
+		return false;
 	}
 
 }
