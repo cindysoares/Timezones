@@ -28,8 +28,8 @@
 	});
 	
 	loginApp.controller('LoginCtrl', function(loginFactory, $scope, $cookies) {
-		this.email = "cindy@email.com"; // FIXME remove this value 
-		this.password = "senha"; // FIXME remove this value 
+		this.email; 
+		this.password;  
 		this.$messages = {};
 		this.submit = function() {
 			loginFactory.login(this.email, this.password).then(function(d) {				
