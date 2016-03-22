@@ -5,9 +5,15 @@
 * Java 8
 * Gradle
 
+#### Continuous Integration 
+https://travis-ci.org/cindysoares/Timezones
+
+#### Deployed on Heroku
+https://timezones-cindy.herokuapp.com/
+
 #### Building and running local server
 
-`> gradle build jettyEclipseRun`
+`> gradlew build jettyEclipseRun`
 
 #### Usage
 
