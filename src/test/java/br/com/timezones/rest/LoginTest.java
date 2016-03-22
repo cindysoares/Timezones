@@ -22,7 +22,7 @@ public class LoginTest extends RestTest {
         String responseMsg = target
         		.request(MediaType.APPLICATION_JSON)
         	    .post(Entity.entity(new Credentials("cindy@email.com", "senha"), MediaType.APPLICATION_JSON), String.class);
-        Assert.assertNotNull("Didn´t generate any token.", responseMsg);
+        Assert.assertNotNull("Didn't generate any token.", responseMsg);
         Assert.assertTrue("Invalid token.", responseMsg.startsWith("Basic "));
         
         User loggedUser = requestBuilder().get(User.class);

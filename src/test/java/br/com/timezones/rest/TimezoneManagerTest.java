@@ -32,13 +32,13 @@ public class TimezoneManagerTest extends RestTest {
     public void test_addTimezone() {
 		Timezone responseMsg = requestBuilder()
         		.post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 1), MediaType.APPLICATION_JSON), Timezone.class);
-        Assert.assertNotNull("Didn´t add the timezone.", responseMsg);
-        Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
+        Assert.assertNotNull("Didn't add the timezone.", responseMsg);
+        Assert.assertNotNull("Didn't set an id.", responseMsg.getId());
         Assert.assertEquals("AKST", responseMsg.getName());
         Assert.assertEquals("Fairbanks", responseMsg.getCity());
         Assert.assertEquals(-9, responseMsg.getGmtDifference());
         Assert.assertEquals(new Integer(1), responseMsg.getUserId());
-        Assert.assertNotNull("Didn´t generate an id.", responseMsg.getId());
+        Assert.assertNotNull("Didn't generate an id.", responseMsg.getId());
         
         requestBuilder("/"+responseMsg.getId()).delete();
     }
@@ -47,13 +47,13 @@ public class TimezoneManagerTest extends RestTest {
     public void test_addTimezoneSettingDifferentUserFromLogged() {
 		Timezone responseMsg = requestBuilder()
         		.post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 3), MediaType.APPLICATION_JSON), Timezone.class);
-        Assert.assertNotNull("Didn´t add the timezone.", responseMsg);
-        Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
+        Assert.assertNotNull("Didn't add the timezone.", responseMsg);
+        Assert.assertNotNull("Didn't set an id.", responseMsg.getId());
         Assert.assertEquals("AKST", responseMsg.getName());
         Assert.assertEquals("Fairbanks", responseMsg.getCity());
         Assert.assertEquals(-9, responseMsg.getGmtDifference());
         Assert.assertEquals(new Integer(1), responseMsg.getUserId());
-        Assert.assertNotNull("Didn´t generate an id.", responseMsg.getId());
+        Assert.assertNotNull("Didn't generate an id.", responseMsg.getId());
         
         requestBuilder("/"+responseMsg.getId()).delete();
     }
@@ -67,8 +67,8 @@ public class TimezoneManagerTest extends RestTest {
     @Test
     public void test_addTimezoneToANonExistentUser() {
     	Timezone responseMsg = requestBuilder().post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 999), MediaType.APPLICATION_JSON), Timezone.class);
-        Assert.assertNotNull("Didn´t add the timezone.", responseMsg);
-        Assert.assertNotNull("Didn´t set an id.", responseMsg.getId());
+        Assert.assertNotNull("Didn't add the timezone.", responseMsg);
+        Assert.assertNotNull("Didn't set an id.", responseMsg.getId());
         Assert.assertEquals("AKST", responseMsg.getName());
         Assert.assertEquals("Fairbanks", responseMsg.getCity());
         Assert.assertEquals(-9, responseMsg.getGmtDifference());
@@ -84,13 +84,13 @@ public class TimezoneManagerTest extends RestTest {
     @Test
     public void test_removeTimezone() {
 		Boolean responseMsg = requestBuilder("/2").delete(Boolean.class);
-        Assert.assertTrue("Didn´t remove the timezone.", responseMsg);
+        Assert.assertTrue("Didn't remove the timezone.", responseMsg);
     }
 
     @Test
     public void test_removeTimezoneFromAnotherUserWhenAdminUserIsLogged() {
 		Boolean responseMsg = requestBuilder("/5", "admin@email.com", "4321").delete(Boolean.class);
-        Assert.assertTrue("Didn´t remove the timezone.", responseMsg);
+        Assert.assertTrue("Didn't remove the timezone.", responseMsg);
     }
 
     @Test(expected=NotAuthorizedException.class)
@@ -119,7 +119,7 @@ public class TimezoneManagerTest extends RestTest {
     public void test_updateTimezone() {
 		Timezone responseMsg = requestBuilder("/1")
         		.put(Entity.entity(new Timezone("VUT", "Port Vila", 11, 1), MediaType.APPLICATION_JSON), Timezone.class);
-        Assert.assertNotNull("Didn´t update the timezone.", responseMsg);
+        Assert.assertNotNull("Didn't update the timezone.", responseMsg);
         Assert.assertEquals(new Integer(1), responseMsg.getId());
         Assert.assertEquals("VUT", responseMsg.getName());
         Assert.assertEquals("Port Vila", responseMsg.getCity());
@@ -143,7 +143,7 @@ public class TimezoneManagerTest extends RestTest {
     public void test_updateTimezoneSettingDifferentUserFromLoggedWhenAdminUserLogged() {
 		Timezone responseMsg = requestBuilder("/1", "admin@email.com", "4321")
         		.put(Entity.entity(new Timezone("CST", "Mexico", -6, 4), MediaType.APPLICATION_JSON), Timezone.class);
-        Assert.assertNotNull("Didn´t update the timezone.", responseMsg);
+        Assert.assertNotNull("Didn't update the timezone.", responseMsg);
         Assert.assertEquals(new Integer(1), responseMsg.getId());
         Assert.assertEquals("CST", responseMsg.getName());
         Assert.assertEquals("Mexico", responseMsg.getCity());
