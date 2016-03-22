@@ -20,25 +20,33 @@
 	app.controller('TimezonesController', function($scope, $http, $cookies, loggedUserFactory){
 		$http.defaults.headers.common.Authorization = $cookies.get("authorizationToken");
 		this.loggedUser;
-		this.loggingShowing = false;
-		this.registeringShowing = false;
+		this.loggingShowing = $cookies.get("loggingShowing")=='true';
+		this.registeringShowing = $cookies.get("registeringShowing")=='true';
 		this.logout = function() {
 			this.loggedUser = null;
+			this.updateCookies();
 			$scope.logout();
 		};
 		this.showLogin = function() {
 			this.loggingShowing = true;
 			this.registeringShowing = false;
+			this.updateCookies();
 		};
 		this.showRegister = function() {
 			this.registeringShowing = true;
 			this.loggingShowing = false;
+			this.updateCookies();
 		};
 		this.login = function(user) {
 			this.loggedUser = user;
 			this.loggingShowing = false;
 			this.registeringShowing = false;
+			this.updateCookies();
 			$scope.loginSuccess();
+		};
+		this.updateCookies = function() {
+			$cookies.put("registeringShowing", this.registeringShowing);
+			$cookies.put("loggingShowing", this.loggingShowing);
 		};
 		$scope.loginSuccess = function(){
 		   $scope.$broadcast("loginSuccess", {loggedUser: $scope.timezones.loggedUser});
@@ -61,12 +69,13 @@
 		}		
 	});
 	
-	app.controller('SectionController', function($scope) {
-		this.selectedTab = {};
+	app.controller('SectionController', function($scope, $cookies) {
+		this.selectedTab = $cookies.get("selectedTab");
 		this.visibleTabs = [];
 		this.selectedUser = null;
 		this.setTab = function(newTab) {
 			this.selectedTab = newTab;
+			this.updateCookies();
 			$scope.tabSelected();	
 		};
 		this.setSelectedUser = function(user) {
@@ -79,16 +88,20 @@
 			if(this.visibleTabs.indexOf(tab) >= 0) return true;
 			return false;
 		}
+		this.updateCookies = function() {
+			$cookies.put("selectedTab", this.selectedTab);
+		}
 		$scope.tabSelected = function(){
 		   $scope.$broadcast("tabSelected", {selectedTab: $scope.section.selectedTab});
 		};
 		$scope.$on("loginSuccess", function(event, args){
 			var userProfile = args.loggedUser.profile;
 			$scope.section.visibleTabs = visibleTabsRoles[userProfile];
-			$scope.section.setTab($scope.section.visibleTabs[0]);
+			$scope.section.setTab($scope.section.selectedTab?$scope.section.selectedTab:$scope.section.visibleTabs[0]);
 		});
 		$scope.$on("logout", function(event, args){
 			$scope.section.selectedUser = null;
+			$scope.section.setTab(null)
 		});		
 		
 	});
