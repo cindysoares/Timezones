@@ -1,12 +1,25 @@
 (function(){
-	var app = angular.module('timezones', ['entries', 'login', 'users', 'register']);
+	var app = angular.module('timezones', ['entries', 'login', 'users', 'register', 'ngCookies']);
 	
 	var visibleTabsRoles = { USER: ['timezones'], 
             USER_MANAGER: ['users'],
             ADMIN_MANAGER: ['timezones', 'users'] };
 	
-	app.controller('TimezonesController', function($scope, $http){
-		this.loggedUser = null;
+	app.factory('loggedUserFactory', function($http) {
+		var myService = {
+				getLoggedUser: function() {
+					return $http.get('/login')
+						.then(function(response){
+							return response.data;
+						});
+				}
+		};
+		return myService;
+	});	
+	
+	app.controller('TimezonesController', function($scope, $http, $cookies, loggedUserFactory){
+		$http.defaults.headers.common.Authorization = $cookies.get("authorizationToken");
+		this.loggedUser;
 		this.loggingShowing = false;
 		this.registeringShowing = false;
 		this.logout = function() {
@@ -33,7 +46,19 @@
 		$scope.logout = function(){
 		   $scope.$broadcast("logout", {loggedUser: $scope.timezones.loggedUser});
 		   delete $http.defaults.headers.common.Authorization;
-		};		
+		   $cookies.remove("authorizationToken");
+		};
+		if($http.defaults.headers.common.Authorization) {
+			loggedUserFactory.getLoggedUser().then(function(d) {				
+				if(d) {
+					$scope.timezones.login(d);
+				} else {
+					$scope.timezones.logout();
+				}
+			}, function(error) {
+				$scope.timezones.logout();
+			});	
+		}		
 	});
 	
 	app.controller('SectionController', function($scope) {

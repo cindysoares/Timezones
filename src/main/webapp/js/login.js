@@ -1,6 +1,6 @@
 (function() {
 	
-	var loginApp = angular.module('login', ['ngMessages']);	
+	var loginApp = angular.module('login', ['ngMessages', 'ngCookies']);	
 	
 	loginApp.factory('loginFactory', function($http) {
 		var myService = {
@@ -27,7 +27,7 @@
 		return myService;
 	});
 	
-	loginApp.controller('LoginCtrl', function(loginFactory, $scope) {
+	loginApp.controller('LoginCtrl', function(loginFactory, $scope, $cookies) {
 		this.email = "cindy@email.com"; // FIXME remove this value 
 		this.password = "senha"; // FIXME remove this value 
 		this.$messages = {};
@@ -36,13 +36,14 @@
 				if(!d) {
 					$scope.login.$messages.invalidLogin = true;
 				} else {
+					$cookies.put("authorizationToken", d);
 					$scope.login.$messages = {};
 					loginFactory.getLoggedUser().then(function(d) {				
-						if(!d) {
+						if(!d) {							
 							$scope.login.$messages.invalidLogin = true;
 						} else {
 							$scope.timezones.login(d);
-							$scope.login.$messages = {}
+							$scope.login.$messages = {};							
 						}
 					});					
 				}
