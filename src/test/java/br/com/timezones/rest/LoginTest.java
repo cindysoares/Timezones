@@ -14,18 +14,17 @@ public class LoginTest extends RestTest {
 	
     @Override
     protected String getBasePath() {
-    	return "/login";
+    	return LOGIN_BASE_PATH;
     }
     
     @Test
     public void test_loginUserSuccess() {
         String responseMsg = target
         		.request(MediaType.APPLICATION_JSON)
-        	    .post(Entity.entity(new Credentials("cindy@email.com", "senha"), MediaType.APPLICATION_JSON), String.class);
+        	    .post(Entity.entity(new Credentials(REGULAR_USER_EMAIL, REGULAR_USER_PASSWORD), MediaType.APPLICATION_JSON), String.class);
         Assert.assertNotNull("Didn't generate any token.", responseMsg);
-        Assert.assertTrue("Invalid token.", responseMsg.startsWith("Basic "));
         
-        User loggedUser = requestBuilder().get(User.class);
+        User loggedUser = target.request().header(AUTHORIZATION_PROPERTY, responseMsg).get(User.class);
         Assert.assertNotNull("Logged user shouldn't be null", loggedUser);
         Assert.assertEquals("Wrong name.", "Cindy Soares", loggedUser.getName());
         Assert.assertEquals("Wrong email.", "cindy@email.com", loggedUser.getEmail());
@@ -35,7 +34,7 @@ public class LoginTest extends RestTest {
     @Test(expected=NotAuthorizedException.class)
     public void test_loginAuthenticationWhenPasswordIsWrong() {
     	String responseMsg = target.request(MediaType.APPLICATION_JSON)
-    			.post(Entity.entity(new Credentials("cindy@email.com", "xxxx"), MediaType.APPLICATION_JSON), String.class);
+    			.post(Entity.entity(new Credentials(REGULAR_USER_EMAIL, "xxxx"), MediaType.APPLICATION_JSON), String.class);
     	Assert.assertNull("Shouldn't generate any token.", responseMsg);
     }
 

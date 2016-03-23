@@ -60,7 +60,7 @@ public class TimezoneManagerTest extends RestTest {
 
     @Test(expected=NotAuthorizedException.class)
     public void test_addTimezoneWhenManagerUserIsLogged() {
-		requestBuilder("manager@email.com", "1234")
+		requestBuilder(MANAGER_USER_EMAIL, MANAGER_USER_PASSWORD)
         		.post(Entity.entity(new Timezone("AKST", "Fairbanks", -9, 3), MediaType.APPLICATION_JSON), Timezone.class);
     }
     
@@ -89,18 +89,18 @@ public class TimezoneManagerTest extends RestTest {
 
     @Test
     public void test_removeTimezoneFromAnotherUserWhenAdminUserIsLogged() {
-		Boolean responseMsg = requestBuilder("/5", "admin@email.com", "4321").delete(Boolean.class);
+		Boolean responseMsg = requestBuilder("/5", ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD).delete(Boolean.class);
         Assert.assertTrue("Didn't remove the timezone.", responseMsg);
     }
 
     @Test(expected=NotAuthorizedException.class)
     public void test_removeTimezoneFromAnotherUserWhenRegularUserIsLogged() {
-		requestBuilder("/6", "manager@email.com", "1234").delete(Boolean.class);
+		requestBuilder("/6", REGULAR_USER_EMAIL, REGULAR_USER_PASSWORD).delete(Boolean.class);
     }
 
     @Test(expected=NotAuthorizedException.class)
     public void test_removeTimezoneWhenManagerUserIsLogged() {
-		requestBuilder("/3", "manager@email.com", "1234").delete(Boolean.class);
+		requestBuilder("/3", MANAGER_USER_EMAIL, MANAGER_USER_PASSWORD).delete(Boolean.class);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class TimezoneManagerTest extends RestTest {
 
     @Test
     public void test_updateTimezoneSettingDifferentUserFromLoggedWhenAdminUserLogged() {
-		Timezone responseMsg = requestBuilder("/1", "admin@email.com", "4321")
+		Timezone responseMsg = requestBuilder("/1", ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD)
         		.put(Entity.entity(new Timezone("CST", "Mexico", -6, 4), MediaType.APPLICATION_JSON), Timezone.class);
         Assert.assertNotNull("Didn't update the timezone.", responseMsg);
         Assert.assertEquals(new Integer(1), responseMsg.getId());
@@ -173,13 +173,13 @@ public class TimezoneManagerTest extends RestTest {
     
     @Test(expected=NotAuthorizedException.class)
     public void test_findAllWhenManagerUser() {
-    	requestBuilder("manager@email.com", "1234").get(List.class);
+    	requestBuilder(MANAGER_USER_EMAIL, MANAGER_USER_PASSWORD).get(List.class);
     }
     
     @Test
     public void test_findAllWhenAdminUser() {
     	@SuppressWarnings("rawtypes")
-		List responseMsg = requestBuilder("admin@email.com", "4321")
+		List responseMsg = requestBuilder(ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD)
     			.get(List.class);
     	Assert.assertNotNull(responseMsg);
     	Assert.assertTrue(responseMsg.size()>=5);

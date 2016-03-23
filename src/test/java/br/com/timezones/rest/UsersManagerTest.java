@@ -50,7 +50,7 @@ public class UsersManagerTest extends RestTest {
 
     @Test
     public void test_addUserWhenAdminUserLogged() {
-		User responseMsg = requestBuilder("admin@email.com", "4321")
+		User responseMsg = requestBuilder(ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD)
         		.post(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.ADMIN_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNotNull("Didn't add the user.", responseMsg);
         Assert.assertNotNull("Didn't set an id.", responseMsg.getId());
@@ -63,7 +63,7 @@ public class UsersManagerTest extends RestTest {
     
     @Test
     public void test_addUserWhenManagerUserLogged() {
-		User responseMsg = requestBuilder("manager@email.com", "1234")
+		User responseMsg = requestBuilder(MANAGER_USER_EMAIL, MANAGER_USER_PASSWORD)
         		.post(Entity.entity(new User("Paul", "paul@email.com", "pass", Profile.ADMIN_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNotNull("Didn't add the user.", responseMsg);
         Assert.assertNotNull("Didn't set an id.", responseMsg.getId());
@@ -87,7 +87,7 @@ public class UsersManagerTest extends RestTest {
     
     @Test
     public void test_updateUserWhenAdminUserLogged() {
-    	User responseMsg = requestBuilder("/4", "admin@email.com", "4321")
+    	User responseMsg = requestBuilder("/4", ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD)
         		.put(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.USER_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNotNull("Didn't update the user.", responseMsg);
         Assert.assertEquals("Wrong id.", new Integer(4), responseMsg.getId());
@@ -99,7 +99,7 @@ public class UsersManagerTest extends RestTest {
     
     @Test
     public void test_updateUserWhenManagerUserLogged() {
-    	User responseMsg = requestBuilder("/4", "manager@email.com", "1234")
+    	User responseMsg = requestBuilder("/4", MANAGER_USER_EMAIL, MANAGER_USER_PASSWORD)
         		.put(Entity.entity(new User("Paul", "paul@email.com", "pass", Profile.USER_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNotNull("Didn't update the user.", responseMsg);
         Assert.assertEquals("Wrong id.", new Integer(4), responseMsg.getId());
@@ -117,7 +117,7 @@ public class UsersManagerTest extends RestTest {
 
     @Test
     public void test_updateNonExistentUser() {
-    	User responseMsg = requestBuilder("/999", "admin@email.com", "4321")
+    	User responseMsg = requestBuilder("/999", ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD)
         		.put(Entity.entity(new User("Michael", "michael@email.com", "pass", Profile.USER_MANAGER), MediaType.APPLICATION_JSON), User.class);
         Assert.assertNull("Updated a non-existent user.", responseMsg);
     }
@@ -129,13 +129,13 @@ public class UsersManagerTest extends RestTest {
     
     @Test
     public void test_removeUserWhenAdminUserLogged() {
-    	boolean responseMsg = requestBuilder("/5", "admin@email.com", "4321").delete(Boolean.class);
+    	boolean responseMsg = requestBuilder("/5", ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD).delete(Boolean.class);
         Assert.assertTrue("Didn't remove the user.", responseMsg);
     }
     
     @Test
     public void test_removeUserWhenManagerUserLogged() {
-    	boolean responseMsg = requestBuilder("/6", "manager@email.com", "1234").delete(Boolean.class);
+    	boolean responseMsg = requestBuilder("/6", MANAGER_USER_EMAIL, MANAGER_USER_PASSWORD).delete(Boolean.class);
         Assert.assertTrue("Didn't remove the user.", responseMsg);
     }
 
@@ -146,7 +146,7 @@ public class UsersManagerTest extends RestTest {
 
     @Test
     public void test_removeNonExistentUser() {
-    	boolean responseMsg = requestBuilder("/9999", "admin@email.com", "4321").delete(Boolean.class);
+    	boolean responseMsg = requestBuilder("/9999", ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD).delete(Boolean.class);
         Assert.assertFalse("Removed a non-existend user.", responseMsg);
     }
     
@@ -157,13 +157,13 @@ public class UsersManagerTest extends RestTest {
 
     @Test
     public void test_getAllWhenAdminUserLogged() {
-    	Set<?> responseMsg = requestBuilder("admin@email.com", "4321").get(Set.class);
+    	Set<?> responseMsg = requestBuilder(ADMIN_USER_EMAIL, ADMIN_USER_PASSWORD).get(Set.class);
         Assert.assertNotNull("Didn't find all users.", responseMsg);
     }
 
     @Test
     public void test_getAllWhenManagerUserLogged() {
-    	Set<?> responseMsg = requestBuilder("manager@email.com", "1234").get(Set.class);
+    	Set<?> responseMsg = requestBuilder(MANAGER_USER_EMAIL, MANAGER_USER_PASSWORD).get(Set.class);
         Assert.assertNotNull("Didn't find all users.", responseMsg);
     }
 
