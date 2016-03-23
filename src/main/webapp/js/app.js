@@ -8,10 +8,7 @@
 	app.factory('loggedUserFactory', function($http) {
 		var myService = {
 				getLoggedUser: function() {
-					return $http.get('/login')
-						.then(function(response){
-							return response.data;
-						});
+					return $http.get('/login');
 				}
 		};
 		return myService;
@@ -57,9 +54,9 @@
 		   $cookies.remove("authorizationToken");
 		};
 		if($http.defaults.headers.common.Authorization) {
-			loggedUserFactory.getLoggedUser().then(function(d) {				
-				if(d) {
-					$scope.timezones.login(d);
+			loggedUserFactory.getLoggedUser().then(function(response) {				
+				if(response.data) {
+					$scope.timezones.login(response.data);
 				} else {
 					$scope.timezones.logout();
 				}
