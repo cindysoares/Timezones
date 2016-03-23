@@ -1,7 +1,7 @@
 <div ng-controller="UsersCtrl as users">
 	<form>
 		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="user in users.list">
+			<li class="list-group-item" ng-repeat="user in users.list | orderBy: 'name'">
 				<ul class="nav nav-tabs nav-justified" ng-hide="users.isEditMode(user)">
 					<li>
 						<span class="label label-default">{{user.profile}}</span>
