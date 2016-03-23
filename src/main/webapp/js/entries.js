@@ -1,53 +1,23 @@
 (function(){
 	var timezonesApp = angular.module('entries', ['ngMessages']);
 		
-	timezonesApp.factory('findAllService',  function($http) {
+	timezonesApp.factory('timezonesService',  function($http) {
 		var myService = {
-				async: function (userId) {
+				findAll: function (userId) {
 					return $http.get("/timezones");
+				},
+				add: function (userId, timezone) {
+					return $http.post("/timezones", timezone);
+				},
+				remove: function (userId, timezoneId) {
+					return $http.delete("/timezones/" + timezoneId);
+				},
+				update: function (userId, timezone) {
+					return $http.put("/timezones/" + timezone.id, timezone);
 				}
 		};
 		return myService;
 	});
-	
-	timezonesApp.factory('addTimezoneService',  function($http) {
-		var myService = {
-				async: function (userId, timezone) {
-					var promise = $http.post("/timezones", timezone)
-					.then(function(response){
-						return response.data;
-					});
-					return promise;
-				}
-		};
-		return myService;
-	});
-	
-	timezonesApp.factory('removeTimezoneService',  function($http) {
-		var myService = {
-				async: function (userId, timezoneId) {
-					var promise = $http.delete("/timezones/" + timezoneId)
-					.then(function(response){
-						return response.data;
-					});
-					return promise;
-				}
-		};
-		return myService;
-	});
-	
-	timezonesApp.factory('updateTimezoneService',  function($http) {
-		var myService = {
-				async: function (userId, timezone) {
-					var promise = $http.put("/timezones/" + timezone.id, timezone)
-					.then(function(response){
-						return response.data;
-					});
-					return promise;
-				}
-		};
-		return myService;
-	});	
 	
 	timezonesApp.filter('filterByName', function(){
 		return function(timezones, filterName) {
@@ -62,7 +32,7 @@
 		}
 	});
 	
-	timezonesApp.controller('EntriesCtrl', function($scope, findAllService, addTimezoneService, removeTimezoneService, updateTimezoneService) {
+	timezonesApp.controller('EntriesCtrl', function($scope, timezonesService) {
 		this.$messages = {}
 		this.editedTimezone = {};
 		this.editMode = false;
@@ -90,7 +60,7 @@
 			return false;
 		};
 		this.init = function() {
-			findAllService.async(this.selectedUser.id).then(function(result) {
+			timezonesService.findAll(this.selectedUser.id).then(function(result) {
 				$scope.editTimezone.list = result.data;
 			}, function(error) {
 				if(error.status==401) {
@@ -117,8 +87,8 @@
 			if( this.selectedIndex === -1 ) {
 				this.$messages.warning = true;
 			}
-			removeTimezoneService.async(this.selectedUser.id, timezoneToRemove.id).then(function(removed) {
-				if (removed) {
+			timezonesService.remove(this.selectedUser.id, timezoneToRemove.id).then(function(response) {
+				if (response.data) {
 					$scope.editTimezone.list.splice( $scope.editTimezone.selectedIndex, 1 );
 					$scope.editTimezone.$messages.deleteSuccess = true;
 				} else {
@@ -130,9 +100,9 @@
 		};
 		this.addTimezone = function() {
 			this.editedTimezone.userId = $scope.timezones.loggedUser.id;
-			addTimezoneService.async(this.selectedUser.id, this.editedTimezone).then(function(d){
-				if (d != null) {
-					$scope.editTimezone.list.push(d);
+			timezonesService.add(this.selectedUser.id, this.editedTimezone).then(function(response){
+				if (response.data != null) {
+					$scope.editTimezone.list.push(response.data);
 					$scope.editTimezone.editedTimezone = {};
 					$scope.editTimezone.editMode = false;
 					$scope.editTimezone.$messages.saveSuccess = true;
@@ -145,10 +115,10 @@
 		};
 		this.updateTimezone = function(timezoneToUpdate) {
 			this.selectedIndex = this.list.indexOf(timezoneToUpdate);
-			updateTimezoneService.async(this.selectedUser.id, timezoneToUpdate).then(function(d){				
-				if (d != null) {
+			timezonesService.update(this.selectedUser.id, timezoneToUpdate).then(function(response){				
+				if (response.data != null) {
 					$scope.editTimezone.list.splice( $scope.editTimezone.selectedIndex, 1 );
-					$scope.editTimezone.list.push(d);
+					$scope.editTimezone.list.push(response.data);
 					$scope.editTimezone.editMode = false;
 					$scope.editTimezone.$messages.updateSuccess = true;
 				} else {
