@@ -4,11 +4,7 @@
 	timezonesApp.factory('findAllService',  function($http) {
 		var myService = {
 				async: function (userId) {
-					var promise = $http.get("/timezones")
-					.then(function(response){
-						return response.data;
-					});
-					return promise;
+					return $http.get("/timezones");
 				}
 		};
 		return myService;
@@ -95,7 +91,14 @@
 		};
 		this.init = function() {
 			findAllService.async(this.selectedUser.id).then(function(result) {
-				$scope.editTimezone.list = result;
+				$scope.editTimezone.list = result.data;
+			}, function(error) {
+				if(error.status==401) {
+					$scope.timezones.logout(); 
+					return;
+				}
+				$scope.editTimezone.list = null;
+				$scope.editTimezone.$messages.warning = true;
 			});
 			this.editMode = false;
 			this.editedTimezone = {};
@@ -121,6 +124,8 @@
 				} else {
 					$scope.editTimezone.$messages.warning = true;
 				}
+			}, function(error){
+				$scope.editTimezone.$messages.warning = true;
 			});			
 		};
 		this.addTimezone = function() {
@@ -134,6 +139,8 @@
 				} else {
 					$scope.editTimezone.$messages.warning = true;
 				}
+			}, function(error){
+				$scope.editTimezone.$messages.warning = true;
 			});			
 		};
 		this.updateTimezone = function(timezoneToUpdate) {
@@ -147,6 +154,8 @@
 				} else {
 					$scope.editTimezone.$messages.warning = true;
 				}
+			}, function(error){
+				$scope.editTimezone.$messages.warning = true;
 			});		
 		};
 		$scope.$on("tabSelected", function(event, args){
