@@ -89,7 +89,11 @@
 			return false;
 		}
 		this.updateCookies = function() {
-			$cookies.put("selectedTab", this.selectedTab);
+			if(this.selectedTab) {
+				$cookies.put("selectedTab", this.selectedTab);
+			} else {
+				$cookies.remove("selectedTab");
+			}
 		}
 		$scope.tabSelected = function(){
 		   $scope.$broadcast("tabSelected", {selectedTab: $scope.section.selectedTab});
