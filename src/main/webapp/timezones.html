@@ -1,7 +1,7 @@
 <div class="panel" ng-controller='EntriesCtrl as editTimezone'>
 	<div><form name="formTimezone" ng-submit="editTimezone.save()">
 		<ul class="list-group">
-            <li class="list-group-item" ng-repeat="timezone in editTimezone.list | filterByName: filterName">
+            <li class="list-group-item" ng-repeat="timezone in editTimezone.list | orderBy: 'name' | filterByName: filterName">
             	<ul class="nav nav-tabs nav-justified" ng-hide="editTimezone.isEditMode(timezone)">
               		<li>
               			<span class="label label-default">{{timezone.name}}</span> {{timezone.city}}              			
