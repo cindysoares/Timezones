@@ -68,7 +68,7 @@
 					return;
 				}
 				$scope.editTimezone.list = null;
-				$scope.editTimezone.$messages.warning = true;
+				$scope.editTimezone.$messages.error = true;
 			});
 			this.editMode = false;
 			this.editedTimezone = {};
@@ -95,7 +95,7 @@
 					$scope.editTimezone.$messages.warning = true;
 				}
 			}, function(error){
-				$scope.editTimezone.$messages.warning = true;
+				$scope.editTimezone.$messages.error = true;
 			});			
 		};
 		this.addTimezone = function() {
@@ -110,7 +110,7 @@
 					$scope.editTimezone.$messages.warning = true;
 				}
 			}, function(error){
-				$scope.editTimezone.$messages.warning = true;
+				$scope.editTimezone.$messages.error = true;
 			});			
 		};
 		this.updateTimezone = function(timezoneToUpdate) {
@@ -125,7 +125,7 @@
 					$scope.editTimezone.$messages.warning = true;
 				}
 			}, function(error){
-				$scope.editTimezone.$messages.warning = true;
+				$scope.editTimezone.$messages.error = true;
 			});		
 		};
 		$scope.$on("tabSelected", function(event, args){
