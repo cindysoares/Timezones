@@ -12,6 +12,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
 public class AuthenticationManager {
@@ -39,19 +40,23 @@ public class AuthenticationManager {
 	}
 	
 	public static User validateToken(String token, ContainerRequestContext requestContext) {
-		Claims claims = Jwts.parser()         
-				   .setSigningKey(signingKey)
-				   .parseClaimsJws(token).getBody();
-		
-        String email = claims.getId();
-        Date expiration = claims.getExpiration();
-        if(expiration == null || expiration.before(new Date())) {
-        	return null;
-        } 
-        
-        User user = getUser(email);
-        requestContext.setProperty(LOGGED_USER_PROPERTY, user);
-		return user;
+		try {
+			Claims claims = Jwts.parser()         
+					.setSigningKey(signingKey)
+					.parseClaimsJws(token).getBody();
+
+			String email = claims.getId();
+			Date expiration = claims.getExpiration();
+			if(expiration == null || expiration.before(new Date())) {
+				return null;
+			} 
+
+			User user = getUser(email);
+			requestContext.setProperty(LOGGED_USER_PROPERTY, user);
+			return user;
+		} catch (SignatureException e) {
+			return null;
+		}
 	}
 	
 	private static User getUser(String email) {
