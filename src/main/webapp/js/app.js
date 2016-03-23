@@ -86,7 +86,7 @@
 			return false;
 		}
 		this.updateCookies = function() {
-			if(this.selectedTab) {
+			if(this.selectedTab != null && this.selectedTab != 'null') {
 				$cookies.put("selectedTab", this.selectedTab);
 			} else {
 				$cookies.remove("selectedTab");
