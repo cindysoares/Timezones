@@ -100,6 +100,10 @@
 					$scope.users.$messages.warning = true;
 				}
 			}, function errorCallback(response){
+				if(response.status==401) {
+					$scope.timezones.logout(); 
+					return;
+				}
 				$scope.users.$messages.error = true;
 			});
 			this.repeatedPassword = null;
@@ -124,6 +128,10 @@
 					$scope.users.$messages.warning = true;
 				}
 			}, function errorCallback(response){
+				if(response.status==401) {
+					$scope.timezones.logout(); 
+					return;
+				}
 				$scope.users.$messages.error = true;
 			});			
 		};
@@ -147,6 +155,10 @@
 					$scope.users.$messages.warning = true;
 				}
 			}, function errorCallback(response){
+				if(response.status==401) {
+					$scope.timezones.logout(); 
+					return;
+				}
 				$scope.users.$messages.error = true;
 			});		
 		};
