@@ -39,7 +39,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         	return;
         }
 
-        final List<String> authorization = requestContext.getHeaders().get(AUTHORIZATION_PROPERTY);
+        verifyAuthorization(requestContext, method);        
+	}
+
+	private void verifyAuthorization(ContainerRequestContext requestContext, Method method) {
+		final List<String> authorization = requestContext.getHeaders().get(AUTHORIZATION_PROPERTY);
         if(authorization == null || authorization.isEmpty())
         {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
@@ -52,7 +56,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             return;
         }
         
-        Class<?> resourceClass = resourceInfo.getResourceClass();
+        verifyMethodRoles(requestContext, method, user);
+	}
+
+	private void verifyMethodRoles(ContainerRequestContext requestContext, Method method, User user) {
+		Class<?> resourceClass = resourceInfo.getResourceClass();
         RolesAllowed rolesAnnotation = null;
         if(method.isAnnotationPresent(RolesAllowed.class)) {
         	rolesAnnotation = method.getAnnotation(RolesAllowed.class);
@@ -67,7 +75,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
                 return;
             }
-        }        
+        }
 	}
 	
 	private boolean isUserAllowed(User user, final Set<String> rolesSet) {		
