@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/cindysoares/Timezones?branch=master)](https://travis-ci.org/joao-felipe-cs/hello-world-java)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/6fa9f90be02743b9be57e303f342a2e1)](https://www.codacy.com/app/cindy-as/Timezones)
-[![Codacy Badge](https://api.codacy.com/project/badge/coverage/6fa9f90be02743b9be57e303f342a2e1)](https://www.codacy.com/app/cindy-as/Timezones)
+[![Build Status](https://travis-ci.org/cindysoares/Timezones?branch=master)](https://travis-ci.org/cindysoares/Timezones)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/a2a824a5e83a42198c8bbf77542b7a49)](https://www.codacy.com/app/cindy-as/Timezones)
+[![Codacy Badge](https://api.codacy.com/project/badge/coverage/a2a824a5e83a42198c8bbf77542b7a49)](https://www.codacy.com/app/cindy-as/Timezones)
 
 ### Timezones
 
