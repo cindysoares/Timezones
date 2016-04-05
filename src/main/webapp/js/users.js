@@ -110,9 +110,8 @@
 		};
 		this.removeUser = function(userToRemove) {
 			this.selectedIndex = -1
-			var usersArray = eval( this.list );
-			for( var i = 0; i < usersArray.length; i++ ) {
-				if( usersArray[i].id === userToRemove.id ) {
+			for( var i = 0; i < this.list.length; i++ ) {
+				if( this.list[i].id === userToRemove.id ) {
 					this.selectedIndex = i;
 					break;
 				}

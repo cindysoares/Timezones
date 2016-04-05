@@ -77,9 +77,8 @@
 		};
 		this.removeTimezone = function(timezoneToRemove) {
 			this.selectedIndex = -1
-			var timezonesArray = eval( this.list );
-			for( var i = 0; i < timezonesArray.length; i++ ) {
-				if( timezonesArray[i].id === timezoneToRemove.id ) {
+			for( var i = 0; i < this.list.length; i++ ) {
+				if( this.list[i].id === timezoneToRemove.id ) {
 					this.selectedIndex = i;
 					break;
 				}
