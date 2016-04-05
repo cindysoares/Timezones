@@ -2,6 +2,9 @@ language: java
 
 before_install:
  - chmod +x gradlew
+ - curl -sL http://bit.ly/jpm4j >jpm4j.jar
+ - sudo java -jar jpm4j.jar -g init
+ - sudo jpm install com.codacy:codacy-coverage-reporter:assembly 
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -12,3 +15,6 @@ cache:
 
 jdk:
   - oraclejdk8	
+  
+after_success:
+ - codacy-coverage-reporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml

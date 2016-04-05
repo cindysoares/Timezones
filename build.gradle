@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
 version = '1.0'
@@ -54,3 +55,10 @@ task copyToLib << {
 }
   
 task stage(dependsOn: ["clean", "war", "copyToLib"])
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+    }
+}
+check.dependsOn jacocoTestReport
