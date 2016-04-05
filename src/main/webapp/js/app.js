@@ -17,8 +17,8 @@
 	app.controller('TimezonesController', function($scope, $http, $cookies, loggedUserFactory){
 		$http.defaults.headers.common.Authorization = $cookies.get("authorizationToken");
 		this.loggedUser;
-		this.loggingShowing = $cookies.get("loggingShowing")=='true';
-		this.registeringShowing = $cookies.get("registeringShowing")=='true';
+		this.loggingShowing = $cookies.get("loggingShowing")==='true';
+		this.registeringShowing = $cookies.get("registeringShowing")==='true';
 		this.logout = function() {
 			this.loggedUser = null;
 			this.updateCookies();
@@ -86,7 +86,7 @@
 			return false;
 		}
 		this.updateCookies = function() {
-			if(this.selectedTab != null && this.selectedTab != 'null') {
+			if(this.selectedTab !== null && this.selectedTab !== 'null') {
 				$cookies.put("selectedTab", this.selectedTab);
 			} else {
 				$cookies.remove("selectedTab");

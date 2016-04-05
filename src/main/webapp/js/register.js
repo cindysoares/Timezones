@@ -18,7 +18,7 @@
 		this.$messages = {};
 		this.newUser = {};
 		this.save = function() {
-			if(this.newUser.password != this.newUser.repeatedPassword) {
+			if(this.newUser.password !== this.newUser.repeatedPassword) {
 				this.$messages.warning = true;
 				return;
 			}			

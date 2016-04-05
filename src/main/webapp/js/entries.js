@@ -63,7 +63,7 @@
 			timezonesService.findAll(this.selectedUser.id).then(function(result) {
 				$scope.editTimezone.list = result.data;
 			}, function(error) {
-				if(error.status==401) {
+				if(error.status===401) {
 					$scope.timezones.logout(); 
 					return;
 				}

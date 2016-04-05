@@ -85,7 +85,7 @@
 			this.list.sort(function(a, b){return a.name.localeCompare(b.name)});
 		};
 		this.addUser = function() {
-			if(this.newUser.newPassword != this.repeatedPassword) {
+			if(this.newUser.newPassword !== this.repeatedPassword) {
 				this.$messages.warning = true;
 				return;
 			}
@@ -100,7 +100,7 @@
 					$scope.users.$messages.warning = true;
 				}
 			}, function errorCallback(response){
-				if(response.status==401) {
+				if(response.status===401) {
 					$scope.timezones.logout(); 
 					return;
 				}
@@ -135,7 +135,7 @@
 			});			
 		};
 		this.updateUser = function(userToUpdate) {
-			if(userToUpdate.password != userToUpdate.repeatedPassword) {
+			if(userToUpdate.password !== userToUpdate.repeatedPassword) {
 				this.$messages = {};
 				this.$messages.warning = true;
 				return;
