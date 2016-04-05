@@ -10,9 +10,6 @@
 * Java 8
 * Gradle
 
-#### Continuous Integration 
-https://travis-ci.org/cindysoares/Timezones
-
 #### Building and running local server
 
 `> gradlew build jettyEclipseRun`
