@@ -71,10 +71,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	}
 	
 	private boolean isUserAllowed(User user, final Set<String> rolesSet) {		
-		if(user != null && rolesSet.contains(user.getProfile().name())) {
-			return true;
-		}		
-		return false;
+		return user != null && rolesSet.contains(user.getProfile().name());
 	}
 
 }

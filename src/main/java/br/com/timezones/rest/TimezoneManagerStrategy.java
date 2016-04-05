@@ -18,7 +18,7 @@ public abstract class TimezoneManagerStrategy {
 		this.user = user;
 	}
 
-	Timezone addTimezone(Timezone timezone) {
+	protected Timezone addTimezone(Timezone timezone) {
 		timezone.setUserId(user.getId());
 		return timezoneDAO.save(timezone);
 	}
