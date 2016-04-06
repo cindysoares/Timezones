@@ -7,7 +7,7 @@
 	
 	app.factory('loggedUserFactory', function($http) {
 		var myService = {
-				getLoggedUser: function() {
+				getLoggedUser() {
 					return $http.get('/login');
 				}
 		};
