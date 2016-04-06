@@ -29,11 +29,11 @@
 			      }			      
 			});
 			return filteredTimezones;
-		}
+		};
 	});
 	
 	timezonesApp.controller('EntriesCtrl', function($scope, timezonesService) {
-		this.$messages = {}
+		this.$messages = {};
 		this.editedTimezone = {};
 		this.editMode = false;
 		this.timezones = $scope.$parent.$parent.timezones;
@@ -68,7 +68,7 @@
 			this.filters = {};
 		};
 		this.removeTimezone = function(timezoneToRemove) {
-			this.selectedIndex = -1
+			this.selectedIndex = -1;
 			for( var i = 0; i < this.list.length; i++ ) {
 				if( this.list[i].id === timezoneToRemove.id ) {
 					this.selectedIndex = i;

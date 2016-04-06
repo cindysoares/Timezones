@@ -56,7 +56,7 @@
 	usersApp.controller('UsersCtrl', function($scope, usersFindAllService, usersAddService, usersRemoveService, usersUpdateService) {
 		this.list = [];
 		this.editMode = false;
-		this.newUser = {}
+		this.newUser = {};
 		this.$messages = {};
 		this.setEditMode = function(value) {
 			this.editMode = value;
@@ -74,7 +74,9 @@
 			this.sortList();
 		};
 		this.sortList = function() {
-			this.list.sort(function(a, b){return a.name.localeCompare(b.name)});
+			this.list.sort(function(a, b){
+				return a.name.localeCompare(b.name);
+			});
 		};
 		this.addUser = function() {
 			if(this.newUser.newPassword !== this.repeatedPassword) {
@@ -101,7 +103,7 @@
 			this.repeatedPassword = null;
 		};
 		this.removeUser = function(userToRemove) {
-			this.selectedIndex = -1
+			this.selectedIndex = -1;
 			for( var i = 0; i < this.list.length; i++ ) {
 				if( this.list[i].id === userToRemove.id ) {
 					this.selectedIndex = i;
@@ -156,7 +158,7 @@
 		this.listMeals = function(user) {
 			$scope.section.setSelectedUser(user);
 			$scope.section.setTab('meals');
-		}
+		};
 		
 		$scope.$on("tabSelected", function(event, args){
 			if (args.selectedTab === 'users') {

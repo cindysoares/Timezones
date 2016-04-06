@@ -84,7 +84,7 @@
 		this.tabIsVisible = function(tab) {
 			if(this.visibleTabs.indexOf(tab) >= 0) return true;
 			return false;
-		}
+		};
 		this.updateCookies = function() {
 			if(this.selectedTab !== null && this.selectedTab !== 'null') {
 				$cookies.put("selectedTab", this.selectedTab);
@@ -102,7 +102,7 @@
 		});
 		$scope.$on("logout", function(){
 			$scope.section.selectedUser = null;
-			$scope.section.setTab(null)
+			$scope.section.setTab(null);
 		});		
 		
 	});
