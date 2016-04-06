@@ -62,17 +62,9 @@
 			this.editMode = value;
 		};
 		this.isEditMode = function(user) {
-			if(!this.editMode) return false;
-			if(!user) return false;
-			
-			if( !this.editMode.id && !user.id ) {
-				return true;
-			}
-			
-			if(this.editMode.id === user.id) {
-				return true;
-			}
-			return false;
+			if(!this.editMode || !user) return false;			
+			if( !this.editMode.id && !user.id ) return true;			
+			return (this.editMode.id === user.id);
 		};		
 		this.init = function() {
 			usersFindAllService.async().then(function(d) {
