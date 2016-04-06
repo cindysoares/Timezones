@@ -47,17 +47,9 @@
 			this.editMode = value;
 		};
 		this.isEditMode = function(timezone) {
-			if(!this.editMode) return false;
-			if(!timezone) return false;
-			
-			if( !this.editMode.id && !timezone.id ) {
-				return true;
-			}
-			
-			if(this.editMode.id === timezone.id) {
-				return true;
-			}
-			return false;
+			if(!this.editMode || !timezone) return false;			
+			if( !this.editMode.id && !timezone.id ) return true;			
+			return (this.editMode.id === timezone.id);
 		};
 		this.init = function() {
 			timezonesService.findAll().then(function(result) {
