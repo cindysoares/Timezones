@@ -60,7 +60,7 @@
 				} else {
 					$scope.timezones.logout();
 				}
-			}, function(error) {
+			}, function() {
 				$scope.timezones.logout();
 			});	
 		}		
@@ -100,7 +100,7 @@
 			$scope.section.visibleTabs = visibleTabsRoles[userProfile];
 			$scope.section.setTab($scope.section.selectedTab?$scope.section.selectedTab:$scope.section.visibleTabs[0]);
 		});
-		$scope.$on("logout", function(event, args){
+		$scope.$on("logout", function(event){
 			$scope.section.selectedUser = null;
 			$scope.section.setTab(null)
 		});		
