@@ -47,8 +47,12 @@
 			this.editMode = value;
 		};
 		this.isEditMode = function(timezone) {
-			if(!this.editMode || !timezone) return false;			
-			if( !this.editMode.id && !timezone.id ) return true;			
+			if(!this.editMode || !timezone) {
+				return false;			
+			}
+			if( !this.editMode.id && !timezone.id ) {
+				return true;			
+			}
 			return (this.editMode.id === timezone.id);
 		};
 		this.init = function() {
@@ -135,4 +139,4 @@
 
 	});
 	
-})();
+}());

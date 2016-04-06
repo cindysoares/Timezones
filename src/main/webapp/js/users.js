@@ -62,8 +62,12 @@
 			this.editMode = value;
 		};
 		this.isEditMode = function(user) {
-			if(!this.editMode || !user) return false;			
-			if( !this.editMode.id && !user.id ) return true;			
+			if(!this.editMode || !user) {
+				return false;			
+			}
+			if( !this.editMode.id && !user.id ) {
+				return true;			
+			}
 			return (this.editMode.id === user.id);
 		};		
 		this.init = function() {
@@ -167,4 +171,4 @@
 		});
 	});
 	
-})();
+}());

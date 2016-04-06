@@ -82,7 +82,9 @@
 			return this.selectedTab === tab;
 		};
 		this.tabIsVisible = function(tab) {
-			if(this.visibleTabs.indexOf(tab) >= 0) return true;
+			if(this.visibleTabs.indexOf(tab) >= 0) {
+				return true;
+			}
 			return false;
 		};
 		this.updateCookies = function() {
@@ -124,4 +126,4 @@
 	});
 
 	
-})();
+}());
