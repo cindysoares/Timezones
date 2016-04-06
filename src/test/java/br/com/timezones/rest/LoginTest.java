@@ -18,7 +18,7 @@ public class LoginTest extends RestTest {
     }
     
     @Test
-    public void test_loginUserSuccess() {
+    public void testLoginUserSuccess() {
         String responseMsg = target
         		.request(MediaType.APPLICATION_JSON)
         	    .post(Entity.entity(new Credentials(REGULAR_USER_EMAIL, REGULAR_USER_PASSWORD), MediaType.APPLICATION_JSON), String.class);
@@ -32,21 +32,21 @@ public class LoginTest extends RestTest {
     }
     
     @Test(expected=NotAuthorizedException.class)
-    public void test_loginAuthenticationWhenPasswordIsWrong() {
+    public void testLoginAuthenticationWhenPasswordIsWrong() {
     	String responseMsg = target.request(MediaType.APPLICATION_JSON)
     			.post(Entity.entity(new Credentials(REGULAR_USER_EMAIL, "xxxx"), MediaType.APPLICATION_JSON), String.class);
     	Assert.assertNull("Shouldn't generate any token.", responseMsg);
     }
 
     @Test(expected=NotAuthorizedException.class)
-    public void test_loginAuthenticationWhenUserDoesntExists() {
+    public void testLoginAuthenticationWhenUserDoesntExists() {
     	String responseMsg = target.request(MediaType.APPLICATION_JSON)
     			.post(Entity.entity(new Credentials("any@email.com", "xxxx"), MediaType.APPLICATION_JSON), String.class);
     	Assert.assertNull("Shouldn't generate any token.", responseMsg);
     }
     
     @Test(expected=NotAuthorizedException.class)
-    public void test_loginUserWithoutCredentials() {
+    public void testLoginUserWithoutCredentials() {
     	User user = target.request(MediaType.APPLICATION_JSON)
     			.get(User.class);
     	Assert.assertNull("Shouldn't find any user.", user);

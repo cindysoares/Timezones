@@ -19,7 +19,7 @@ public class MemoryUserDAOTest {
 	}
 
 	@Test
-	public void testFindByEmail_whenUserDoesntExists() {
+	public void testFindByEmailWhenUserDoesntExists() {
 		User user = dao.find("xxx@email.com");
 		Assert.assertNull("The user was found.", user);
 	}
