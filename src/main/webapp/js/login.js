@@ -47,7 +47,7 @@
 						}
 					});					
 				}
-			}, function(error) {
+			}, function() {
 				$scope.login.$messages.invalidLogin = true;
 			});
 		};
