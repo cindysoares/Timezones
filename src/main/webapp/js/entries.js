@@ -115,7 +115,7 @@
 				} else {
 					$scope.editTimezone.$messages.warning = true;
 				}
-			}, function(error){
+			}, function(){
 				$scope.editTimezone.$messages.error = true;
 			});		
 		};
