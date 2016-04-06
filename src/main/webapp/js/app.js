@@ -100,7 +100,7 @@
 			$scope.section.visibleTabs = visibleTabsRoles[userProfile];
 			$scope.section.setTab($scope.section.selectedTab?$scope.section.selectedTab:$scope.section.visibleTabs[0]);
 		});
-		$scope.$on("logout", function(event){
+		$scope.$on("logout", function(){
 			$scope.section.selectedUser = null;
 			$scope.section.setTab(null)
 		});		
