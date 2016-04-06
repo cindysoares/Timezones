@@ -46,12 +46,12 @@
 			$cookies.put("loggingShowing", this.loggingShowing);
 		};
 		$scope.loginSuccess = function(){
-		   $scope.$broadcast("loginSuccess", {loggedUser: $scope.timezones.loggedUser});
+			$scope.$broadcast("loginSuccess", {loggedUser: $scope.timezones.loggedUser});
 		};		
 		$scope.logout = function(){
-		   $scope.$broadcast("logout", {loggedUser: $scope.timezones.loggedUser});
-		   delete $http.defaults.headers.common.Authorization;
-		   $cookies.remove("authorizationToken");
+			$scope.$broadcast("logout", {loggedUser: $scope.timezones.loggedUser});
+			delete $http.defaults.headers.common.Authorization;
+			$cookies.remove("authorizationToken");
 		};
 		if($http.defaults.headers.common.Authorization) {
 			loggedUserFactory.getLoggedUser().then(function(response) {				
@@ -93,7 +93,7 @@
 			}
 		};
 		$scope.tabSelected = function(){
-		   $scope.$broadcast("tabSelected", {selectedTab: $scope.section.selectedTab});
+			$scope.$broadcast("tabSelected", {selectedTab: $scope.section.selectedTab});
 		};
 		$scope.$on("loginSuccess", function(event, args){
 			var userProfile = args.loggedUser.profile;

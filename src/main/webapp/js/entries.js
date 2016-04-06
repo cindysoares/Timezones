@@ -24,9 +24,9 @@
 			var filteredTimezones = [];
 			var filterNameToUpperCase = filterName? filterName.toUpperCase():null;
 			angular.forEach(timezones, function(timezone) {
-			      if (!filterName || timezone.name.toUpperCase().includes(filterNameToUpperCase)) {
-			    	  filteredTimezones.push(timezone);
-			      }			      
+				if (!filterName || timezone.name.toUpperCase().includes(filterNameToUpperCase)) {
+					filteredTimezones.push(timezone);
+				}			      
 			});
 			return filteredTimezones;
 		};

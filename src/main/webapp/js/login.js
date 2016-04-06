@@ -7,9 +7,8 @@
 				login(emailValue, passwordValue) {
 					var promise = $http.post('/login', {email: emailValue, password: passwordValue},
 							{transformResponse(obj) {
-					                return obj;
-					            }
-							})
+								return obj;
+							}})
 							.then(function(response){
 								var token = response.data;
 								$http.defaults.headers.common.Authorization = token;
