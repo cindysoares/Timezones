@@ -127,7 +127,7 @@
 					$scope.users.$messages.warning = true;
 				}
 			}, function errorCallback(response){
-				if(response.status==401) {
+				if(response.status===401) {
 					$scope.timezones.logout(); 
 					return;
 				}
@@ -154,7 +154,7 @@
 					$scope.users.$messages.warning = true;
 				}
 			}, function errorCallback(response){
-				if(response.status==401) {
+				if(response.status===401) {
 					$scope.timezones.logout(); 
 					return;
 				}
