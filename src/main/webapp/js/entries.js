@@ -100,7 +100,7 @@
 				} else {
 					$scope.editTimezone.$messages.warning = true;
 				}
-			}, function(error){
+			}, function(){
 				$scope.editTimezone.$messages.error = true;
 			});			
 		};
@@ -129,7 +129,7 @@
 				$scope.editTimezone.init();	
 			}
 		});
-		$scope.$on("logout", function(event, args){
+		$scope.$on("logout", function(event){
 			$scope.editTimezone.list = [];
 		});
 
