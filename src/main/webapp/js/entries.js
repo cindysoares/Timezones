@@ -3,16 +3,16 @@
 		
 	timezonesApp.factory('timezonesService',  function($http) {
 		var myService = {
-				findAll: function (userId) {
+				findAll: function () {
 					return $http.get("/timezones");
 				},
-				add: function (userId, timezone) {
+				add: function (timezone) {
 					return $http.post("/timezones", timezone);
 				},
-				remove: function (userId, timezoneId) {
+				remove: function (timezoneId) {
 					return $http.delete("/timezones/" + timezoneId);
 				},
-				update: function (userId, timezone) {
+				update: function (timezone) {
 					return $http.put("/timezones/" + timezone.id, timezone);
 				}
 		};
@@ -60,7 +60,7 @@
 			return false;
 		};
 		this.init = function() {
-			timezonesService.findAll(this.selectedUser.id).then(function(result) {
+			timezonesService.findAll().then(function(result) {
 				$scope.editTimezone.list = result.data;
 			}, function(error) {
 				if(error.status===401) {
@@ -86,7 +86,7 @@
 			if( this.selectedIndex === -1 ) {
 				this.$messages.warning = true;
 			}
-			timezonesService.remove(this.selectedUser.id, timezoneToRemove.id).then(function(response) {
+			timezonesService.remove(timezoneToRemove.id).then(function(response) {
 				if (response.data) {
 					$scope.editTimezone.list.splice( $scope.editTimezone.selectedIndex, 1 );
 					$scope.editTimezone.$messages.deleteSuccess = true;
@@ -99,7 +99,7 @@
 		};
 		this.addTimezone = function() {
 			this.editedTimezone.userId = $scope.timezones.loggedUser.id;
-			timezonesService.add(this.selectedUser.id, this.editedTimezone).then(function(response){
+			timezonesService.add(this.editedTimezone).then(function(response){
 				if (response.data != null) {
 					$scope.editTimezone.list.push(response.data);
 					$scope.editTimezone.editedTimezone = {};
@@ -114,7 +114,7 @@
 		};
 		this.updateTimezone = function(timezoneToUpdate) {
 			this.selectedIndex = this.list.indexOf(timezoneToUpdate);
-			timezonesService.update(this.selectedUser.id, timezoneToUpdate).then(function(response){				
+			timezonesService.update(timezoneToUpdate).then(function(response){				
 				if (response.data != null) {
 					$scope.editTimezone.list.splice( $scope.editTimezone.selectedIndex, 1 );
 					$scope.editTimezone.list.push(response.data);
