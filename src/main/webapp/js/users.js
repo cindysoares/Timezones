@@ -3,7 +3,7 @@
 	
 	usersApp.factory('usersFindAllService', function($http) {
 		var myService = {
-				async: function () {
+				async() {
 					var promise = $http.get("/users")
 					.then(function(response){
 						return response.data;
@@ -16,7 +16,7 @@
 	
 	usersApp.factory('usersAddService', function($http) {
 		var myService = {
-				async: function (newUser) {
+				async(newUser) {
 					var promise = $http.post("/users", newUser)
 					.then(function(response){
 						return response.data;
@@ -29,7 +29,7 @@
 	
 	usersApp.factory('usersRemoveService', function($http) {
 		var myService = {
-				async: function (userId) {
+				async(userId) {
 					var promise = $http.delete("/users/"+userId)
 					.then(function(response){
 						return response.data;
@@ -42,7 +42,7 @@
 	
 	usersApp.factory('usersUpdateService', function($http) {
 		var myService = {
-				async: function (user) {
+				async(user) {
 					var promise = $http.put("/users/"+user.id, user)
 					.then(function(response){
 						return response.data;

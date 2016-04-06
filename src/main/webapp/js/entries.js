@@ -3,16 +3,16 @@
 		
 	timezonesApp.factory('timezonesService',  function($http) {
 		var myService = {
-				findAll: function () {
+				findAll() {
 					return $http.get("/timezones");
 				},
-				add: function (timezone) {
+				add(timezone) {
 					return $http.post("/timezones", timezone);
 				},
-				remove: function (timezoneId) {
+				remove(timezoneId) {
 					return $http.delete("/timezones/" + timezoneId);
 				},
-				update: function (timezone) {
+				update(timezone) {
 					return $http.put("/timezones/" + timezone.id, timezone);
 				}
 		};

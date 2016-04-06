@@ -3,7 +3,7 @@
 	
 	registerApp.factory('userAddService', function($http) {
 		var myService = {
-				async: function (newUser) {
+				async(newUser) {
 					var promise = $http.post("/users/regular", newUser)
 					.then(function(response){
 						return response.data;

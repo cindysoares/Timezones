@@ -4,9 +4,9 @@
 	
 	loginApp.factory('loginFactory', function($http) {
 		var myService = {
-				login: function (emailValue, passwordValue) {
+				login(emailValue, passwordValue) {
 					var promise = $http.post('/login', {email: emailValue, password: passwordValue},
-							{transformResponse: function(obj) {
+							{transformResponse(obj) {
 					                return obj;
 					            }
 							})
@@ -17,7 +17,7 @@
 							});
 					return promise;
 				},
-				getLoggedUser: function() {
+				getLoggedUser() {
 					return $http.get('/login')
 						.then(function(response){
 							return response.data;

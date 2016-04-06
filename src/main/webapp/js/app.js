@@ -91,7 +91,7 @@
 			} else {
 				$cookies.remove("selectedTab");
 			}
-		}
+		};
 		$scope.tabSelected = function(){
 		   $scope.$broadcast("tabSelected", {selectedTab: $scope.section.selectedTab});
 		};
